@@ -1,0 +1,21 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+*.env
+
+# Temporary / Scratch scripts & files
+*.ps1
+extracted_doc.txt
+*.docx
+gato.*
+test_kitten_svg.js
+*.log
+
+# OS generated
+Thumbs.db
+.DS_Store

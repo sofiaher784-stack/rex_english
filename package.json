@@ -1,0 +1,20 @@
+{
+  "name": "rex-english",
+  "version": "2.0.0",
+  "description": "Rexing - Plataforma Inteligente de Dominio de Inglés (A1 - C1)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "english-learning",
+    "fluency",
+    "rexing",
+    "cefr",
+    "ielts",
+    "toefl",
+    "education"
+  ],
+  "author": "sofiaher784-stack",
+  "license": "ISC"
+}
