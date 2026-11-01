@@ -3104,9 +3104,10 @@
         }
         if (appContainer) {
           appContainer.classList.remove('hidden');
-          appContainer.style.display = 'block';
+          appContainer.style.display = 'flex';
         }
         try { applySessionToUI(session); } catch(e){ console.warn(e); }
+        try { switchTab('hoytoca'); } catch(e){ console.warn(e); }
       }
     }
 
@@ -3257,8 +3258,11 @@
         }
         if (appContainer) {
           appContainer.classList.remove('hidden');
-          appContainer.style.display = 'block';
+          appContainer.style.display = 'flex';
         }
+
+        // Activar la vista inicial por defecto
+        try { switchTab('hoytoca'); } catch(e){ console.warn('switchTab error:', e); }
 
         // Actualizar iconos de Lucide
         if (window.lucide && typeof lucide.createIcons === 'function') {
@@ -3274,6 +3278,21 @@
               origin: { y: 0.6 }
             });
           } catch(e) {}
+        }
+
+        // Desplegar el Test Diagnóstico Inicial si el usuario aún no lo ha realizado
+        const userKey = userData.email || userData.username || 'user';
+        const hasTested = localStorage.getItem('fluency_has_tested_' + userKey);
+        if (!hasTested) {
+          setTimeout(() => {
+            try {
+              if (typeof openPlacementModal === 'function') {
+                openPlacementModal();
+              }
+            } catch(e) {
+              console.warn('openPlacementModal error:', e);
+            }
+          }, 600);
         }
       } else {
         // ACCESO DENEGADO
@@ -3358,12 +3377,17 @@
     }
 
     function logoutUser() {
-      localStorage.removeItem('fluency_auth_user');
-      sessionStorage.removeItem('fluency_auth_user');
+      try {
+        localStorage.removeItem('fluency_auth_user');
+        sessionStorage.removeItem('fluency_auth_user');
+      } catch(e){}
       
       // BLOQUEAR ACCESO INMEDIATAMENTE
       const appContainer = document.getElementById('appContainer');
-      if (appContainer) appContainer.classList.add('hidden');
+      if (appContainer) {
+        appContainer.classList.add('hidden');
+        appContainer.style.display = 'none';
+      }
 
       const loginModal = document.getElementById('loginModal');
       const userInp = document.getElementById('loginUsername');
@@ -3388,12 +3412,21 @@
       }
       if (passInp) passInp.value = '';
       if (errorAlert) errorAlert.classList.add('hidden');
-      if (loginModal) loginModal.classList.remove('hidden');
+
+      if (loginModal) {
+        loginModal.classList.remove('hidden');
+        loginModal.style.display = 'flex';
+      }
 
       // Cerrar cualquier modal abierto
-      document.querySelectorAll('.fixed.inset-0:not(#loginModal)').forEach(m => m.classList.add('hidden'));
+      document.querySelectorAll('.fixed.inset-0:not(#loginModal)').forEach(m => {
+        m.classList.add('hidden');
+        m.style.display = 'none';
+      });
 
-      if (window.lucide) lucide.createIcons();
+      if (window.lucide && typeof lucide.createIcons === 'function') {
+        try { lucide.createIcons(); } catch(e){}
+      }
     }
     // ========================================================
     // 1. AVATAR AMIGABLE DEL BOT (COACH EMMA - MENTORA DULCE)
@@ -6943,14 +6976,24 @@
     function openPlacementModal() {
       currentQIndex = 0;
       testScore = 0;
-      document.getElementById('testQuestionArea').classList.remove('hidden');
-      document.getElementById('testResultArea').classList.add('hidden');
-      document.getElementById('placementModal').classList.remove('hidden');
+      const modal = document.getElementById('placementModal');
+      const qArea = document.getElementById('testQuestionArea');
+      const rArea = document.getElementById('testResultArea');
+      if (qArea) qArea.classList.remove('hidden');
+      if (rArea) rArea.classList.add('hidden');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.style.display = 'flex';
+      }
       loadQuestion();
     }
 
     function closePlacementModal() {
-      document.getElementById('placementModal').classList.add('hidden');
+      const modal = document.getElementById('placementModal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+      }
     }
 
     function loadQuestion() {
@@ -7016,6 +7059,9 @@
     }
 
     function applyTestResults() {
+      const session = getActiveSession();
+      const userKey = session ? (session.email || session.username || 'user') : 'user';
+      try { localStorage.setItem('fluency_has_tested_' + userKey, 'true'); } catch(e){}
       closePlacementModal();
       switchTab('lecturas');
     }
@@ -7690,13 +7736,15 @@ ${eventsIcs}END:VCALENDAR`;
       try { renderConfigSyncDays(); } catch(e) { console.warn('renderConfigSyncDays:', e); }
 
       const session = getActiveSession();
-      if (session && !localStorage.getItem('fluency_has_tested')) {
-        setTimeout(() => {
-          try {
-            openPlacementModal();
-            localStorage.setItem('fluency_has_tested', 'true');
-          } catch(e){}
-        }, 800);
+      if (session) {
+        const userKey = session.email || session.username || 'user';
+        if (!localStorage.getItem('fluency_has_tested_' + userKey)) {
+          setTimeout(() => {
+            try {
+              openPlacementModal();
+            } catch(e){}
+          }, 800);
+        }
       }
     });
   </script>
