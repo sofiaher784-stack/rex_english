@@ -12,6 +12,7 @@ const STATIC_ASSETS = [
   path.join(__dirname, 'data_audio.js'),
   path.join(__dirname, 'avatar_male.jpg'),
   path.join(__dirname, 'avatar_female.jpg'),
+  path.join(__dirname, 'coach_emma.jpg'),
   path.join(__dirname, 'index.html')
 ];
 

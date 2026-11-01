@@ -467,6 +467,7 @@
           <label class="text-xs font-bold text-slate-600 whitespace-nowrap">Escenario:</label>
           <select id="scenarioSelect" onchange="changeScenario()" class="text-xs border border-slate-200 rounded-xl p-2.5 bg-slate-50 font-semibold focus:ring-2 focus:ring-indigo-500 w-full md:w-auto">
             <option value="interview">💼 Entrevista de Trabajo (Tech / Silicon Valley)</option>
+            <option value="civil_law">⚖️ Asesoría Legal: Derecho Civil & Contratos (Legal English)</option>
             <option value="ielts_part2">🎓 IELTS Speaking Part 2: Discurso Académico</option>
             <option value="cafe_daily">☕ Conversación Cotidiana: Café en Londres</option>
             <option value="toefl_discussion">🏛️ TOEFL Academic Debate: Inteligencia Artificial</option>
@@ -486,7 +487,7 @@
               <div class="relative">
                 <!-- Avatar Amigable del Bot (Coach Emma) -->
                 <div id="coachAvatarContainer" class="w-11 h-11 rounded-full border-2 border-indigo-400 bg-white shadow-xs overflow-hidden flex items-center justify-center">
-                  <!-- Inyectado por JS: Avatar adorable de mentora -->
+                  <img src="coach_emma.jpg" alt="Coach Emma" class="w-full h-full object-cover rounded-full" onerror="this.onerror=null; this.src='avatar_female.jpg';" />
                 </div>
                 <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full"></span>
               </div>
@@ -510,7 +511,7 @@
           <div class="p-3.5 border-t border-slate-200 bg-white rounded-b-2xl">
             <form onsubmit="sendUserMessage(event)" class="flex items-center gap-2">
               <input type="text" id="userInputChat" placeholder="Responde en inglés... (ej. In my last project, I had a problem with the database and...)" class="flex-1 text-sm border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50">
-              <button type="button" onclick="startVoiceInput()" title="Hablar con micrófono" class="p-2.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl border border-slate-200 transition">
+              <button type="button" onclick="startVoiceInput()" id="voiceInputBtn" title="Hablar con micrófono" class="p-2.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl border border-slate-200 transition">
                 <i data-lucide="mic" class="w-5 h-5"></i>
               </button>
               <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl font-bold text-sm transition shadow-sm flex items-center gap-1.5">
@@ -3429,36 +3430,11 @@
       }
     }
     // ========================================================
-    // 1. AVATAR AMIGABLE DEL BOT (COACH EMMA - MENTORA DULCE)
+    // 1. AVATAR AMIGABLE DEL BOT (COACH EMMA - FOTO OFICIAL)
     // ========================================================
     function createFriendlyCoachSvg() {
       return `
-        <svg viewBox="0 0 100 100" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="50" cy="50" r="48" fill="#e0e7ff"/>
-          <!-- Cabello ondulado púrpura/violeta suave -->
-          <circle cx="50" cy="46" r="32" fill="#6366f1"/>
-          <path d="M20 54 Q16 80 34 85 Q30 65 30 54 Z" fill="#4f46e5"/>
-          <path d="M80 54 Q84 80 66 85 Q70 65 70 54 Z" fill="#4f46e5"/>
-          <!-- Rostro -->
-          <ellipse cx="50" cy="52" rx="22" ry="20" fill="#fde68a"/>
-          <!-- Flequillo amable -->
-          <path d="M30 40 Q50 32 70 42 Q60 36 50 37 Q38 36 30 40" fill="#4f46e5"/>
-          <!-- Ojos sonrientes brillantes -->
-          <ellipse cx="42" cy="50" rx="4" ry="5" fill="#1e1b4b"/>
-          <circle cx="41" cy="48" r="1.5" fill="#ffffff"/>
-          <ellipse cx="58" cy="50" rx="4" ry="5" fill="#1e1b4b"/>
-          <circle cx="57" cy="48" r="1.5" fill="#ffffff"/>
-          <!-- Cejas amables -->
-          <path d="M38 43 Q42 41 46 43" stroke="#4338ca" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-          <path d="M54 43 Q58 41 62 43" stroke="#4338ca" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-          <!-- Sonrisa cálida -->
-          <path d="M46 58 Q50 63 54 58" stroke="#be123c" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-          <!-- Mejillas sonrojadas -->
-          <circle cx="36" cy="56" r="3.5" fill="#f43f5e" opacity="0.4"/>
-          <circle cx="64" cy="56" r="3.5" fill="#f43f5e" opacity="0.4"/>
-          <!-- Pequeña diadema con estrellita de mentora -->
-          <polygon points="50,22 52,27 57,28 53,31 54,36 50,33 46,36 47,31 43,28 48,27" fill="#fbbf24"/>
-        </svg>
+        <img src="coach_emma.jpg" alt="Coach Emma" class="w-full h-full object-cover rounded-full" onerror="this.onerror=null; this.src='avatar_female.jpg';" />
       `;
     }
 
@@ -3538,6 +3514,123 @@
     } else {
       cards = [...DEFAULT_CARDS];
       localStorage.setItem('fluency_cards', JSON.stringify(cards));
+    }
+
+    // ========================================================
+    // 2B. GESTOR DE ALERTAS TOAST Y DICCIONARIO DE ERRORES A VOCABULARIO
+    // ========================================================
+    function showVocabAddedToast({ term, translation, source = 'Lección', status = 'challenging', ipa = '' }) {
+      let container = document.getElementById('vocabToastContainer');
+      if (!container) {
+        container = document.createElement('div');
+        container.id = 'vocabToastContainer';
+        container.className = "fixed top-5 right-5 z-[99999] flex flex-col gap-2.5 max-w-sm w-full pointer-events-none px-3";
+        document.body.appendChild(container);
+      }
+
+      const toast = document.createElement('div');
+      toast.className = "pointer-events-auto bg-slate-900/95 text-white backdrop-blur-md p-3.5 rounded-2xl shadow-2xl border border-rose-500/60 flex items-start space-x-3 transform transition-all duration-300 translate-x-10 opacity-0";
+      
+      toast.innerHTML = `
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-amber-500 flex items-center justify-center flex-shrink-0 shadow-md text-white mt-0.5">
+          <i data-lucide="bookmark-plus" class="w-5 h-5"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center justify-between gap-1 mb-1">
+            <span class="text-[10px] font-black tracking-wider uppercase text-rose-300 bg-rose-950/80 px-2 py-0.5 rounded-full border border-rose-700/60 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse"></span> Desafío / Errores
+            </span>
+            <span class="text-[10px] text-slate-400 truncate max-w-[120px]">${source}</span>
+          </div>
+          <p class="text-xs font-bold text-white truncate">
+            ${term} <span class="text-[11px] font-normal text-slate-400">${ipa || ''}</span>
+          </p>
+          <p class="text-[11px] text-slate-300 line-clamp-1 mt-0.5">${translation || ''}</p>
+          <div class="mt-1 flex items-center gap-1 text-[10px] font-bold text-emerald-400">
+            <span>✓ Agregado a tu Tablero de Vocabulario</span>
+          </div>
+        </div>
+        <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-white p-0.5 transition">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      `;
+
+      container.appendChild(toast);
+      if (window.lucide && typeof lucide.createIcons === 'function') {
+        try { lucide.createIcons(); } catch(e){}
+      }
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-x-10', 'opacity-0');
+        toast.classList.add('translate-x-0', 'opacity-100');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('translate-x-10', 'opacity-0');
+        setTimeout(() => {
+          if (toast && toast.parentElement) toast.remove();
+        }, 350);
+      }, 4500);
+    }
+
+    function addChallengingWordToVocabulary({ term, ipa = '', translation = '', example = '', level = null, tag = 'Errores', source = 'Detección de Error', note = '' }) {
+      if (!term || typeof term !== 'string' || !term.trim()) return;
+      term = term.trim();
+
+      const userCefr = (typeof userProfile !== 'undefined' && userProfile.cefr) ? userProfile.cefr : 'A2';
+      const cardLevel = level || userCefr;
+
+      // Buscar si ya existe la tarjeta en el mazo
+      const existingCard = cards.find(c => c.term.toLowerCase() === term.toLowerCase());
+      if (existingCard) {
+        existingCard.status = 'challenging'; // Mover automáticamente a la columna Desafío / Errores
+        existingCard.daysWithoutPractice = 0;
+        if (translation && (!existingCard.translation || existingCard.translation.length < 5)) {
+          existingCard.translation = translation;
+        }
+        if (example && !existingCard.example) {
+          existingCard.example = example;
+        }
+        existingCard.note = note || `Detectado en error (${source})`;
+      } else {
+        const newCard = {
+          id: "err_" + Date.now() + "_" + Math.floor(Math.random() * 1000),
+          term: term,
+          ipa: ipa,
+          translation: translation || "Refuerzo por error detectado",
+          example: example || `Practice sentence for: "${term}"`,
+          level: cardLevel,
+          status: 'challenging', // Columna 5: Desafío / Errores
+          tag: tag,
+          daysWithoutPractice: 0,
+          note: note || `Agregado automáticamente por error en ${source}`
+        };
+        cards.unshift(newCard);
+      }
+
+      // Guardar en localStorage
+      localStorage.setItem('fluency_cards', JSON.stringify(cards));
+
+      // Re-renderizar kanban si está disponible
+      if (typeof renderKanban === 'function') {
+        try { renderKanban(); } catch(e) {}
+      }
+
+      // Actualizar contadores globales y badge de la barra lateral
+      const badgeTotal = document.getElementById('badgeTotalCards');
+      if (badgeTotal) badgeTotal.textContent = cards.length;
+
+      const sidebarBadge = document.querySelector('[data-tab="vocabulary"] span.rounded-full');
+      if (sidebarBadge) sidebarBadge.textContent = cards.length;
+
+      // Lanzar alerta visual flotante
+      showVocabAddedToast({
+        term: term,
+        ipa: ipa,
+        translation: translation,
+        source: source,
+        status: 'challenging'
+      });
     }
     
     let userProfile = JSON.parse(localStorage.getItem('fluency_profile')) || {
@@ -5395,6 +5488,24 @@
         }
       });
 
+      if (!isCorrect) {
+        const lesson = (typeof GRAMMAR_LESSONS !== 'undefined') ? GRAMMAR_LESSONS.find(l => l.id === activeGrammarLessonId) : null;
+        if (lesson && lesson.quiz && lesson.quiz[qIdx]) {
+          const qObj = lesson.quiz[qIdx];
+          const correctOption = qObj.options[qObj.correct];
+          const wrongOption = qObj.options[optIdx];
+          addChallengingWordToVocabulary({
+            term: correctOption,
+            translation: qObj.hint || `Regla clave: ${lesson.title}`,
+            example: qObj.q.replace(/_{2,}/g, correctOption),
+            level: lesson.level || (userProfile ? userProfile.cefr : 'A2'),
+            tag: 'Gramática',
+            source: 'Lección de Gramática',
+            note: `Error seleccionado: "${wrongOption}". Corrección obligatoria: "${correctOption}"`
+          });
+        }
+      }
+
       const hintEl = document.getElementById(`grammarQuizHint_${qIdx}`);
       if (hintEl) hintEl.classList.remove('hidden');
     }
@@ -5612,6 +5723,33 @@
       } else {
         fb.className = "text-xs font-bold text-rose-600";
         fb.textContent = "Inténtalo de nuevo. Revisa el texto.";
+
+        const item = (typeof GRADED_READINGS !== 'undefined') ? GRADED_READINGS[currentReadingIndex] : null;
+        if (item) {
+          let targetTerm = "";
+          let targetTrans = "";
+          let targetExample = `From reading: "${item.title}"`;
+          if (item.keywords && item.keywords.length > 0) {
+            targetTerm = item.keywords[0].w;
+            targetTrans = item.keywords[0].m;
+            targetExample = item.keywords[0].ex || targetExample;
+          } else if (item.quiz && item.quiz.opts) {
+            const correctOpt = item.quiz.opts.find(o => o.correct);
+            targetTerm = correctOpt ? correctOpt.t : item.title;
+            targetTrans = `Comprensión de lectura: ${item.title}`;
+          }
+          if (targetTerm) {
+            addChallengingWordToVocabulary({
+              term: targetTerm,
+              translation: targetTrans,
+              example: targetExample,
+              level: (item.level === 'EXAM' ? 'C1' : item.level) || (userProfile ? userProfile.cefr : 'B1'),
+              tag: item.category || 'Lecturas',
+              source: 'Lectura Comprensiva',
+              note: `Error en quiz de lectura: ${item.title}`
+            });
+          }
+        }
       }
     }
 
@@ -5966,6 +6104,32 @@
       } else {
         fb.className = "text-xs font-bold text-rose-600";
         fb.textContent = "Respuesta incorrecta. Vuelve a escuchar prestando atención a los detalles.";
+
+        const item = (typeof AUDIO_SITUATIONS !== 'undefined') ? (AUDIO_SITUATIONS[currentAudioIndex] || AUDIO_SITUATIONS[0]) : null;
+        if (item) {
+          let targetTerm = "";
+          let targetTrans = "";
+          if (item.quiz && item.quiz.opts) {
+            const correctOpt = item.quiz.opts.find(o => o.correct);
+            targetTerm = correctOpt ? correctOpt.t : item.title;
+            targetTrans = item.traps ? item.traps.split('.')[0] : `Comprensión auditiva: ${item.title}`;
+          } else {
+            targetTerm = item.title;
+            targetTrans = item.context || "Audio gym";
+          }
+          if (targetTerm.length > 35) {
+            targetTerm = targetTerm.slice(0, 32) + "...";
+          }
+          addChallengingWordToVocabulary({
+            term: targetTerm,
+            translation: targetTrans,
+            example: item.audioText ? item.audioText.slice(0, 90) + "..." : item.title,
+            level: userProfile ? userProfile.cefr : 'B1',
+            tag: 'Listening',
+            source: 'Gimnasio de Audio',
+            note: `Error de escucha en: ${item.title}`
+          });
+        }
       }
     }
 
@@ -6157,6 +6321,12 @@
         coachName: "Coach Emma",
         initialMsg: "Hello! I am Emma, your friendly interview mentor. Let's make this feel natural and relaxed! To start off, could you tell me about a project or challenge you worked on recently?"
       },
+      civil_law: {
+        title: "⚖️ Asesoría Legal: Derecho Civil & Contratos",
+        sub: "Asesoría para abogados: Litigio civil, breach of contract y daños",
+        coachName: "Senior Counsel Emma",
+        initialMsg: "Welcome to our legal advisory chamber, Counselor. We are reviewing a commercial breach of contract dispute involving civil liability, damages, and indemnity clauses. Could you outline the contractual liabilities of the defaulting party and whether liquidated damages are enforceable?"
+      },
       ielts_part2: {
         title: "🎓 IELTS Speaking Part 2: Discurso Académico",
         sub: "Simulador oficial IELTS: Respuesta extendida de 2 minutos",
@@ -6180,10 +6350,94 @@
         sub: "Control migratorio en Heathrow Airport",
         coachName: "Officer Emma",
         initialMsg: "Good morning! May I see your passport, please? What is the purpose of your trip to London today?"
+      },
+      c2_debate: {
+        title: "🏛️ Debate Filosófico & Diplomacia (Nivel C2)",
+        sub: "Retórica avanzada, dialéctica y diplomacia internacional",
+        coachName: "Ambassador Emma",
+        initialMsg: "Welcome. Today we examine the ethical paradigm of state sovereignty versus universal humanitarian intervention. How do you articulate the boundary where non-intervention yields to moral necessity?"
       }
     };
 
     let currentScenarioKey = 'interview';
+
+    // Patrones de errores frecuentes detectados tanto por texto como por voz
+    const SIMULATOR_ERROR_PATTERNS = [
+      // Expresiones de Derecho Civil y Legal English
+      { pattern: /\b(break|broken|breaking)\s+(the\s+)?contract\b/i, term: "Breach of contract", ipa: "/briːtʃ əv ˈkɒntrækt/", translation: "Incumplimiento de contrato", example: "Failure to deliver the goods constitutes a material breach of contract.", tag: "Legal Civil" },
+      { pattern: /\bpenalty\s+clause\b/i, term: "Liquidated damages", ipa: "/ˈlɪkwɪdeɪtɪd ˈdæmɪdʒɪz/", translation: "Cláusula penal / Daños y perjuicios prefijados", example: "The contract contains a liquidated damages clause for delays.", tag: "Legal Civil" },
+      { pattern: /\b(cancel|finish)\s+(the\s+)?(contract|agreement)\b/i, term: "Terminate the agreement", ipa: "/ˈtɜːrmɪneɪt ðɪ əˈɡriːmənt/", translation: "Rescindir / Resolver el contrato", example: "Either party may terminate the agreement upon 30 days written notice.", tag: "Legal Civil" },
+      { pattern: /\bresponsible\s+(for\s+the|of)\s+damage(s)?\b/i, term: "Liable for damages", ipa: "/ˈlaɪəbl fər ˈdæmɪdʒɪz/", translation: "Responsable civil de los daños y perjuicios", example: "The contractor is held liable for damages resulting from negligence.", tag: "Legal Civil" },
+      { pattern: /\b(guarantee|protect)\s+against\s+(lawsuit|claims)\b/i, term: "Indemnity clause", ipa: "/ɪnˈdemnɪti klɔːz/", translation: "Cláusula de indemnidad / Saneamiento", example: "The vendor agreed to an indemnity clause protecting our client against claims.", tag: "Legal Civil" },
+      { pattern: /\b(civil\s+damage|damage\s+to\s+person|non-contract\s+damage)\b/i, term: "Tort liability", ipa: "/tɔːrt ˌlaɪəˈbɪləti/", translation: "Responsabilidad civil extracontractual", example: "Tort liability arises when negligence causes harm outside of contract.", tag: "Legal Civil" },
+      { pattern: /\b(not\s+valid|without\s+value)\s+contract\b/i, term: "Void and unenforceable", ipa: "/vɔɪd ænd ˌʌnɪnˈfɔːrsəbl/", translation: "Nulo y sin efecto vinculante", example: "The clause was ruled void and unenforceable by the civil tribunal.", tag: "Legal Civil" },
+      { pattern: /\b(big|bigger)\s+force\b/i, term: "Force Majeure", ipa: "/ˌfɔːrs mæˈʒɜːr/", translation: "Fuerza mayor", example: "The delivery delay was excused under the Force Majeure clause.", tag: "Legal Civil" },
+      { pattern: /\b(fulfill|complete)\s+(the\s+)?(obligations|contract)\b/i, term: "Perform contractual obligations", ipa: "/pərˈfɔːrm kənˈtræktʃuəl ˌɒblɪˈɡeɪʃənz/", translation: "Cumplir con las prestaciones del contrato", example: "Both parties faithfully performed their contractual obligations.", tag: "Legal Civil" },
+
+      // Errores gramaticales, colocaciones y preposiciones comunes
+      { pattern: /\b(did|do|doing)\s+a\s+mistake\b/i, term: "Make a mistake", ipa: "/meɪk ə mɪˈsteɪk/", translation: "Cometer un error (Colocación: se usa 'make')", example: "It is natural to make a mistake when learning.", tag: "Colocaciones" },
+      { pattern: /\barrive\s+to\b/i, term: "Arrive in / at", ipa: "/əˈraɪv ɪn/", translation: "Llegar a (Usa 'in' para ciudades/países y 'at' para edificios)", example: "We will arrive in London tomorrow morning.", tag: "Preposiciones" },
+      { pattern: /\bexplain\s+me\b/i, term: "Explain to me", ipa: "/ɪkˈspleɪn tuː miː/", translation: "Explicarme (Requiere la preposición 'to')", example: "Could you please explain this clause to me?", tag: "Gramática" },
+      { pattern: /\blisten\s+(me|him|her|them)\b/i, term: "Listen to", ipa: "/ˈlɪs.ən tuː/", translation: "Escuchar a (Requiere 'to')", example: "Please listen to the witness statement carefully.", tag: "Preposiciones" },
+      { pattern: /\bdepend\s+of\b/i, term: "Depend on", ipa: "/dɪˈpend ɒn/", translation: "Depender de (Rige la preposición 'on')", example: "The ruling will depend on the documentary evidence.", tag: "Preposiciones" },
+      { pattern: /\b(i\s+am|i'm)\s+agree\b/i, term: "I agree", ipa: "/aɪ əˈɡriː/", translation: "Estoy de acuerdo ('Agree' es verbo, no 'I am agree')", example: "I agree with the terms outlined in section 4.", tag: "Gramática" },
+      { pattern: /\blook\s+forward\s+to\s+see\b/i, term: "Look forward to seeing", ipa: "/lʊk ˈfɔːrwəd tuː ˈsiːɪŋ/", translation: "Esperar con ilusión (Requiere gerundio -ing)", example: "I look forward to seeing your contractual draft.", tag: "Gramática" },
+      { pattern: /\bpay\s+attention\s+on\b/i, term: "Pay attention to", ipa: "/peɪ əˈtenʃən tuː/", translation: "Prestar atención a (Preposición 'to')", example: "Pay attention to the liability limitations.", tag: "Preposiciones" },
+      { pattern: /\blose\s+time\b/i, term: "Waste time", ipa: "/weɪst taɪm/", translation: "Perder el tiempo (Se dice 'waste time')", example: "We cannot afford to waste time during negotiations.", tag: "Colocaciones" },
+      { pattern: /\b(i\s+have|she\s+has|he\s+has)\s+\d+\s+years\b/i, term: "To be ... years old", ipa: "/tuː biː jɪərz əʊld/", translation: "Tener ... años (Se usa verbo 'to be', nunca 'have')", example: "She is 30 years old, not 'she has 30 years'.", tag: "Gramática" },
+      { pattern: /\bpeople\s+is\b/i, term: "People are", ipa: "/ˈpiːpəl ɑːr/", translation: "La gente es/está (People es plural en inglés)", example: "People are concerned about civil liability.", tag: "Concordancia" }
+    ];
+
+    let currentLabTargetWord = {
+      term: "Breach of contract",
+      ipa: "/briːtʃ əv ˈkɒntrækt/",
+      translation: "Incumplimiento de contrato",
+      example: "A material breach of contract allows termination.",
+      tag: "Legal Civil"
+    };
+
+    function checkSimulatorTextForErrors(text, isVoice = false) {
+      if (!text || typeof text !== 'string') return;
+      const lower = text.toLowerCase();
+      let matchedError = null;
+
+      for (const item of SIMULATOR_ERROR_PATTERNS) {
+        if (item.pattern.test(lower)) {
+          matchedError = item;
+          break;
+        }
+      }
+
+      if (matchedError) {
+        currentLabTargetWord = {
+          term: matchedError.term,
+          ipa: matchedError.ipa || '',
+          translation: matchedError.translation,
+          example: matchedError.example || `Correct usage: ${matchedError.term}`,
+          tag: matchedError.tag || 'Errores'
+        };
+
+        // Añadir automáticamente a la columna de Desafío / Errores en Vocabulario
+        addChallengingWordToVocabulary({
+          term: matchedError.term,
+          ipa: matchedError.ipa,
+          translation: matchedError.translation,
+          example: matchedError.example,
+          level: currentScenarioKey === 'civil_law' ? 'C1' : (userProfile.cefr || 'A2'),
+          tag: matchedError.tag,
+          source: isVoice ? 'Voz / Audio (Simulador)' : 'Escritura (Simulador)',
+          note: `Expresión detectada en diálogo: "${text}"`
+        });
+      } else if (currentScenarioKey === 'civil_law') {
+        currentLabTargetWord = {
+          term: "Liquidated damages",
+          ipa: "/ˈlɪkwɪdeɪtɪd ˈdæmɪdʒɪz/",
+          translation: "Daños y perjuicios prefijados / Cláusula penal",
+          example: "The agreement stipulates liquidated damages in the event of default.",
+          tag: "Legal Civil"
+        };
+      }
+    }
 
     function changeScenario() {
       currentScenarioKey = document.getElementById('scenarioSelect').value;
@@ -6191,7 +6445,7 @@
     }
 
     function restartCurrentScenario() {
-      const scen = SCENARIOS[currentScenarioKey];
+      const scen = SCENARIOS[currentScenarioKey] || SCENARIOS.interview;
       document.getElementById('coachName').textContent = scen.coachName;
       document.getElementById('scenarioSubheader').textContent = scen.sub;
 
@@ -6223,6 +6477,9 @@
 
       appendChatMessage('user', text);
       input.value = '';
+
+      // Detección automática de errores para incorporar a Vocabulario y lanzar Alerta
+      checkSimulatorTextForErrors(text, false);
       activateSelfCorrectionLab(text);
 
       userProfile.aiChatMessages = (userProfile.aiChatMessages || 5) + 1;
@@ -6257,7 +6514,7 @@
           </div>
         `;
       } else {
-        const scen = SCENARIOS[currentScenarioKey];
+        const scen = SCENARIOS[currentScenarioKey] || SCENARIOS.interview;
         msgDiv.innerHTML = `
           <div class="w-8 h-8 rounded-full border-2 border-indigo-400 bg-white flex-shrink-0 overflow-hidden flex items-center justify-center">
             ${createFriendlyCoachSvg()}
@@ -6289,18 +6546,31 @@
       let polished = "";
       let explanation = "";
 
-      if (lower.includes("did a mistake") || lower.includes("do a mistake")) {
-        hint = "Revisa la colocación con 'mistake'. En inglés no se dice 'do a mistake'. ¿Qué verbo se usa?";
-        polished = sentence.replace(/did a mistake/gi, "made a mistake").replace(/do a mistake/gi, "make a mistake");
-        explanation = "Se dice 'make a mistake'. La colocación con do es incorrecta.";
-      } else if (lower.includes("arrive to")) {
-        hint = "Preposición: En inglés se dice 'arrive in London/Spain', no 'arrive to'.";
-        polished = sentence.replace(/arrive to/gi, "arrive in");
-        explanation = "Usa 'arrive in' para ciudades/países y 'arrive at' para edificios puntuales.";
+      let matched = null;
+      for (const item of SIMULATOR_ERROR_PATTERNS) {
+        if (item.pattern.test(lower)) {
+          matched = item;
+          break;
+        }
+      }
+
+      if (matched) {
+        hint = `Revisión recomendada: Encontramos '${matched.term}'. ${matched.translation}. Intenta reescribir tu mensaje integrando esta expresión.`;
+        polished = sentence.replace(matched.pattern, matched.term);
+        explanation = `En inglés preciso se utiliza '${matched.term}'. ${matched.translation}.`;
+      } else if (currentScenarioKey === 'civil_law') {
+        hint = "Para nivel de asesoría jurídica profesional (Legal Counsel), reemplaza expresiones informales por terminología de contratos civiles (ej. 'breach', 'privity', 'liquidated damages', 'remedies').";
+        polished = "Under the present contractual framework, non-performance constitutes a material breach, rendering the defaulting party liable for liquidated damages and legal remedies.";
+        explanation = "Esta formulación utiliza precisión técnico-jurídica civil ('material breach', 'liquidated damages', 'remedies').";
       } else {
         hint = "Tu mensaje se entiende bien. Para elevarlo a nivel C1, sustituye palabras comunes por conectores de contraste y verbos precisos.";
         polished = "In retrospect, we encountered a formidable bottleneck; nonetheless, through structured root-cause analysis, we mitigated the issue effectively.";
         explanation = "Esta versión incorpora conectores formales ('nonetheless') y vocabulario técnico ('mitigated').";
+      }
+
+      const fichaVocab = document.getElementById('fichaVocabulario');
+      if (fichaVocab && currentLabTargetWord) {
+        fichaVocab.textContent = `"${currentLabTargetWord.term}"`;
       }
 
       document.getElementById('labHintText').textContent = hint;
@@ -6330,12 +6600,16 @@
 
       if (currentScenarioKey === 'interview') {
         reply = "That shows clear problem-solving initiative! How did you communicate the progress and timeline with your team?";
+      } else if (currentScenarioKey === 'civil_law') {
+        reply = "A sharp legal analysis, Counselor. Under civil jurisprudence, considering the limitation of liability and potential tort claims, what specific contractual remedies or injunction should our client petition for first?";
       } else if (currentScenarioKey === 'ielts_part2') {
         reply = "Thank you. That was fluent and well structured! Moving to Part 3: How has this technology changed our daily routines?";
       } else if (currentScenarioKey === 'cafe_daily') {
         reply = "Sure thing! That'll be £3.40. Would you like a fresh croissant with that today?";
       } else if (currentScenarioKey === 'toefl_discussion') {
         reply = "An insightful point. However, how would you address the argument regarding the short-term job displacement?";
+      } else if (currentScenarioKey === 'c2_debate') {
+        reply = "A nuanced philosophical thesis. Yet, how does that perspective survive the scrutiny of empirical statecraft and international law treaties?";
       } else {
         reply = "Understood. How long do you plan to stay in the UK, and where will you be staying?";
       }
@@ -6348,9 +6622,28 @@
         const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
         const recognition = new SpeechRec();
         recognition.lang = 'en-US';
+        const micBtn = document.getElementById('voiceInputBtn');
+        if (micBtn) {
+          micBtn.classList.add('bg-rose-100', 'text-rose-600', 'animate-pulse');
+        }
         recognition.onresult = function(event) {
           const transcript = event.results[0][0].transcript;
-          document.getElementById('userInputChat').value = transcript;
+          const input = document.getElementById('userInputChat');
+          if (input) {
+            input.value = transcript;
+            // Detección automática en audio hablado: agrega a Vocabulario y lanza alerta
+            checkSimulatorTextForErrors(transcript, true);
+          }
+        };
+        recognition.onerror = function() {
+          if (micBtn) {
+            micBtn.classList.remove('bg-rose-100', 'text-rose-600', 'animate-pulse');
+          }
+        };
+        recognition.onend = function() {
+          if (micBtn) {
+            micBtn.classList.remove('bg-rose-100', 'text-rose-600', 'animate-pulse');
+          }
         };
         recognition.start();
       } else {
@@ -6359,22 +6652,24 @@
     }
 
     function saveFichaToKanban() {
-      const newCard = {
-        id: "c_" + Date.now(),
-        term: "Mitigate",
-        ipa: "/ˈmɪt.ə.ɡeɪt/",
-        translation: "Mitigar / Atenuar el impacto de un riesgo",
-        example: "We implemented early testing to mitigate risks.",
-        level: userProfile.cefr,
-        status: "new",
-        tag: "Tech",
-        daysWithoutPractice: 0,
-        note: "Capturado en la sesión de conversación."
+      const target = currentLabTargetWord || {
+        term: "Breach of contract",
+        ipa: "/briːtʃ əv ˈkɒntrækt/",
+        translation: "Incumplimiento de contrato",
+        example: "A material breach of contract allows termination.",
+        tag: "Legal Civil"
       };
-      cards.unshift(newCard);
+      addChallengingWordToVocabulary({
+        term: target.term,
+        ipa: target.ipa || '',
+        translation: target.translation,
+        example: target.example,
+        level: currentScenarioKey === 'civil_law' ? 'C1' : (userProfile ? userProfile.cefr : 'A2'),
+        tag: target.tag,
+        source: 'Laboratorio de Auto-Corrección',
+        note: 'Guardado manualmente desde el Laboratorio de Conversación'
+      });
       addXP(25);
-      renderKanban();
-      alert(`¡"${newCard.term}" guardado en tu Tablero!`);
     }
 
     // ========================================================
@@ -7075,7 +7370,24 @@
     }
 
     function handleAnswerSelect(isCorrect) {
-      if (isCorrect) testScore++;
+      if (isCorrect) {
+        testScore++;
+      } else {
+        const q = (typeof TEST_QUESTIONS !== 'undefined') ? TEST_QUESTIONS[currentQIndex] : null;
+        if (q) {
+          const correctOpt = q.options ? q.options.find(o => o.correct) : null;
+          const term = correctOpt ? correctOpt.text : (q.question || 'Concepto clave');
+          addChallengingWordToVocabulary({
+            term: term,
+            translation: q.question || 'Pregunta de evaluación diagnóstica',
+            example: q.question ? q.question.replace(/_{2,}/g, term) : `Key structure: ${term}`,
+            level: userProfile ? userProfile.cefr : 'A2',
+            tag: 'Test Inicial',
+            source: 'Test Diagnóstico',
+            note: `Fallo detectado en pregunta #${currentQIndex + 1}`
+          });
+        }
+      }
       currentQIndex++;
       if (currentQIndex < TEST_QUESTIONS.length) loadQuestion();
       else showTestResults();
@@ -7813,5 +8125,8 @@ ${eventsIcs}END:VCALENDAR`;
       }
     });
   </script>
+
+  <!-- Contenedor Flotante de Alertas Toast de Vocabulario -->
+  <div id="vocabToastContainer" class="fixed top-5 right-5 z-[99999] flex flex-col gap-2.5 max-w-sm w-full pointer-events-none px-3"></div>
 </body>
 </html>
