@@ -2,7 +2,6 @@
   "name": "rex-english",
   "version": "2.0.0",
   "description": "Rexing - Plataforma Inteligente de Dominio de Inglés (A1 - C1)",
-  "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },

@@ -10,10 +10,22 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Canvas Confetti CDN -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
   <!-- Módulos de FluencyOS: Kitten Avatar, 30 Lecturas y Gimnasio de Audio -->
   <script src="data_kitten.js"></script>
   <script src="data_readings.js"></script>
   <script src="data_audio.js"></script>
+  <script>
+    // Salvaguarda y Fallbacks tempranos si algún script externo se retrasa
+    if (typeof window.getCatAvatarHtml === 'undefined') {
+      window.getCatAvatarHtml = function(catCfg, sizeClass = "w-11 h-11", userName = "") {
+        const photo = (catCfg && catCfg.photo) || 'male';
+        const img = photo === 'female' ? 'avatar_female.jpg' : 'avatar_male.jpg';
+        return '<div class="relative ' + sizeClass + ' rounded-full border-2 border-amber-400 ring-2 ring-amber-300 shadow-md bg-indigo-50 overflow-hidden flex-shrink-0 flex items-center justify-center"><img src="' + img + '" alt="Avatar" class="w-full h-full object-cover rounded-full" onerror="this.parentElement.innerHTML=\'👤\'" /></div>';
+      };
+    }
+  </script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -3069,20 +3081,32 @@
 
       if (!session) {
         // ACCESO DENEGADO: Ocultar aplicación por completo
-        if (appContainer) appContainer.classList.add('hidden');
+        if (appContainer) {
+          appContainer.classList.add('hidden');
+          appContainer.style.display = 'none';
+        }
         if (loginModal) {
           loginModal.classList.remove('hidden');
+          loginModal.style.display = 'flex';
           setTimeout(() => {
             const userInp = document.getElementById('loginUsername');
             if (userInp) userInp.focus();
-            if (window.lucide) lucide.createIcons();
+            if (window.lucide && typeof lucide.createIcons === 'function') {
+              try { lucide.createIcons(); } catch(e){}
+            }
           }, 50);
         }
       } else {
         // ACCESO CONCEDIDO: Mostrar aplicación
-        if (loginModal) loginModal.classList.add('hidden');
-        if (appContainer) appContainer.classList.remove('hidden');
-        applySessionToUI(session);
+        if (loginModal) {
+          loginModal.classList.add('hidden');
+          loginModal.style.display = 'none';
+        }
+        if (appContainer) {
+          appContainer.classList.remove('hidden');
+          appContainer.style.display = 'block';
+        }
+        try { applySessionToUI(session); } catch(e){ console.warn(e); }
       }
     }
 
@@ -3185,40 +3209,61 @@
       if (submitBtn) submitBtn.disabled = false;
 
       if (authSuccess && userData) {
-        const sessionPayload = {
-          ...userData,
-          loginAt: new Date().toISOString()
-        };
+        try {
+          const sessionPayload = {
+            ...userData,
+            loginAt: new Date().toISOString()
+          };
 
-        const remember = rememberCheck ? rememberCheck.checked : true;
-        if (remember) {
-          localStorage.setItem('fluency_auth_user', JSON.stringify(sessionPayload));
-          sessionStorage.removeItem('fluency_auth_user');
-        } else {
-          sessionStorage.setItem('fluency_auth_user', JSON.stringify(sessionPayload));
-          localStorage.removeItem('fluency_auth_user');
+          const remember = rememberCheck ? rememberCheck.checked : true;
+          if (remember) {
+            localStorage.setItem('fluency_auth_user', JSON.stringify(sessionPayload));
+            sessionStorage.removeItem('fluency_auth_user');
+          } else {
+            sessionStorage.setItem('fluency_auth_user', JSON.stringify(sessionPayload));
+            localStorage.removeItem('fluency_auth_user');
+          }
+
+          // Si el usuario tiene perfil lingüístico específico, sincronizarlo
+          if (typeof userProfile !== 'undefined') {
+            userProfile.name = userData.name || userProfile.name;
+            if (userData.cefr) userProfile.cefr = userData.cefr;
+            if (userData.targetGoal) userProfile.targetGoal = userData.targetGoal;
+            if (!userProfile.cat) userProfile.cat = {};
+            if (userData.photo) userProfile.cat.photo = userData.photo;
+            if (userData.avatarCoat) userProfile.cat.coat = userData.avatarCoat;
+            if (userData.avatarAcc) userProfile.cat.acc = userData.avatarAcc;
+            try { localStorage.setItem('fluency_profile', JSON.stringify(userProfile)); } catch(e){}
+            if (typeof applyCatToUI === 'function') {
+              try { applyCatToUI(); } catch (e) { console.warn('applyCatToUI error:', e); }
+            }
+            if (typeof updateHeaderBadges === 'function') {
+              try { updateHeaderBadges(); } catch (e) { console.warn('updateHeaderBadges error:', e); }
+            }
+          }
+
+          if (typeof applySessionToUI === 'function') {
+            try { applySessionToUI(sessionPayload); } catch (e) { console.warn('applySessionToUI error:', e); }
+          }
+        } catch (syncErr) {
+          console.warn('Error during session preparation:', syncErr);
         }
 
-        // Si el usuario tiene perfil lingüístico específico, sincronizarlo
-        if (typeof userProfile !== 'undefined') {
-          userProfile.name = userData.name || userProfile.name;
-          if (userData.cefr) userProfile.cefr = userData.cefr;
-          if (userData.targetGoal) userProfile.targetGoal = userData.targetGoal;
-          if (!userProfile.cat) userProfile.cat = {};
-          if (userData.photo) userProfile.cat.photo = userData.photo;
-          if (userData.avatarCoat) userProfile.cat.coat = userData.avatarCoat;
-          if (userData.avatarAcc) userProfile.cat.acc = userData.avatarAcc;
-          localStorage.setItem('fluency_profile', JSON.stringify(userProfile));
-          if (typeof applyCatToUI === 'function') applyCatToUI();
-          if (typeof updateHeaderBadges === 'function') updateHeaderBadges();
-        }
-
-        applySessionToUI(sessionPayload);
-
-        // Ocultar modal de login y CONCEDER ACCESO A LA APLICACIÓN
+        // Ocultar modal de login y CONCEDER ACCESO A LA APLICACIÓN DE MANERA GARANTIZADA
         const loginModal = document.getElementById('loginModal');
-        if (loginModal) loginModal.classList.add('hidden');
-        if (appContainer) appContainer.classList.remove('hidden');
+        if (loginModal) {
+          loginModal.classList.add('hidden');
+          loginModal.style.display = 'none';
+        }
+        if (appContainer) {
+          appContainer.classList.remove('hidden');
+          appContainer.style.display = 'block';
+        }
+
+        // Actualizar iconos de Lucide
+        if (window.lucide && typeof lucide.createIcons === 'function') {
+          try { lucide.createIcons(); } catch(e){}
+        }
 
         // Confeti festivo de bienvenida
         if (typeof confetti === 'function') {
@@ -3736,7 +3781,23 @@
 
     function applyCatToUI() {
       const name = userProfile.name || 'Whiskers Scholar';
-      const catHtml = getCatAvatarHtml(userProfile.cat, "w-11 h-11", name);
+      let catHtml = '';
+      if (typeof getCatAvatarHtml === 'function') {
+        try {
+          catHtml = getCatAvatarHtml(userProfile.cat, "w-11 h-11", name);
+        } catch (e) {
+          console.warn('getCatAvatarHtml error:', e);
+        }
+      }
+      if (!catHtml) {
+        const photo = (userProfile.cat && userProfile.cat.photo) || 'male';
+        const img = photo === 'female' ? 'avatar_female.jpg' : 'avatar_male.jpg';
+        catHtml = `
+          <div class="relative w-11 h-11 rounded-full border-2 border-amber-400 ring-2 ring-amber-300 shadow-md bg-indigo-50 overflow-hidden flex-shrink-0 flex items-center justify-center">
+            <img src="${img}" alt="Avatar" class="w-full h-full object-cover rounded-full" onerror="this.parentElement.innerHTML='<span class=\\'text-lg\\'>👤</span>'"/>
+          </div>
+        `;
+      }
 
       // Sidebar
       const sidebarContainer = document.getElementById('sidebarCatAvatarContainer');
@@ -3748,7 +3809,9 @@
         sidebarSkill.textContent = userProfile.cat.skill.split('(')[0].trim();
       }
       const coachAvatarCont = document.getElementById('coachAvatarContainer');
-      if (coachAvatarCont) coachAvatarCont.innerHTML = createFriendlyCoachSvg();
+      if (coachAvatarCont && typeof createFriendlyCoachSvg === 'function') {
+        try { coachAvatarCont.innerHTML = createFriendlyCoachSvg(); } catch(e){}
+      }
     }
 
     // ========================================================
@@ -5348,6 +5411,10 @@
     function renderReadingsList(filterLevel = 'ALL') {
       const container = document.getElementById('readingCardsList');
       if (!container) return;
+      if (typeof GRADED_READINGS === 'undefined' || !Array.isArray(GRADED_READINGS)) {
+        container.innerHTML = '<div class="p-6 text-center text-slate-400 text-sm">Cargando biblioteca de lecturas...</div>';
+        return;
+      }
       container.innerHTML = '';
 
       let count = 0;
@@ -5418,15 +5485,22 @@
     }
 
     function renderActiveReading() {
+      if (typeof GRADED_READINGS === 'undefined' || !Array.isArray(GRADED_READINGS) || GRADED_READINGS.length === 0) return;
       const item = GRADED_READINGS[currentReadingIndex] || GRADED_READINGS[0];
+      if (!item) return;
 
-      document.getElementById('activeReadingLevelBadge').textContent = `Nivel ${item.level}`;
-      document.getElementById('activeReadingCategory').textContent = item.category;
-      document.getElementById('activeReadingTitle').textContent = item.title;
+      const badge = document.getElementById('activeReadingLevelBadge');
+      if (badge) badge.textContent = `Nivel ${item.level}`;
+      const cat = document.getElementById('activeReadingCategory');
+      if (cat) cat.textContent = item.category;
+      const title = document.getElementById('activeReadingTitle');
+      if (title) title.textContent = item.title;
 
       // Párrafos
       const contentDiv = document.getElementById('activeReadingContent');
-      contentDiv.innerHTML = item.paragraphs.map(p => `<p class="leading-relaxed">${p}</p>`).join('');
+      if (contentDiv && item.paragraphs) {
+        contentDiv.innerHTML = item.paragraphs.map(p => `<p class="leading-relaxed">${p}</p>`).join('');
+      }
 
       // Keywords
       const kwDiv = document.getElementById('activeReadingKeywords');
@@ -7600,26 +7674,28 @@ ${eventsIcs}END:VCALENDAR`;
     // INICIALIZACIÓN GENERAL
     // ========================================================
     window.addEventListener('DOMContentLoaded', () => {
-      initAuthCheck();
-      applyCatToUI();
-      renderKanban();
-      updateHeaderBadges();
-      restartCurrentScenario();
-      renderReadingsList();
-      renderAudioGym();
-      renderHoyToca();
-      renderGrammarView();
-      renderProgressView();
-      renderAchievements();
-      selectRoadmapNode(userProfile.cefr || 'B2');
-      syncConfigViewFromProfile();
-      renderConfigSyncDays();
+      try { initAuthCheck(); } catch(e) { console.warn('initAuthCheck:', e); }
+      try { applyCatToUI(); } catch(e) { console.warn('applyCatToUI:', e); }
+      try { renderKanban(); } catch(e) { console.warn('renderKanban:', e); }
+      try { updateHeaderBadges(); } catch(e) { console.warn('updateHeaderBadges:', e); }
+      try { restartCurrentScenario(); } catch(e) { console.warn('restartCurrentScenario:', e); }
+      try { renderReadingsList(); } catch(e) { console.warn('renderReadingsList:', e); }
+      try { renderAudioGym(); } catch(e) { console.warn('renderAudioGym:', e); }
+      try { renderHoyToca(); } catch(e) { console.warn('renderHoyToca:', e); }
+      try { renderGrammarView(); } catch(e) { console.warn('renderGrammarView:', e); }
+      try { renderProgressView(); } catch(e) { console.warn('renderProgressView:', e); }
+      try { renderAchievements(); } catch(e) { console.warn('renderAchievements:', e); }
+      try { selectRoadmapNode(userProfile.cefr || 'B2'); } catch(e) { console.warn('selectRoadmapNode:', e); }
+      try { syncConfigViewFromProfile(); } catch(e) { console.warn('syncConfigViewFromProfile:', e); }
+      try { renderConfigSyncDays(); } catch(e) { console.warn('renderConfigSyncDays:', e); }
 
       const session = getActiveSession();
       if (session && !localStorage.getItem('fluency_has_tested')) {
         setTimeout(() => {
-          openPlacementModal();
-          localStorage.setItem('fluency_has_tested', 'true');
+          try {
+            openPlacementModal();
+            localStorage.setItem('fluency_has_tested', 'true');
+          } catch(e){}
         }, 800);
       }
     });

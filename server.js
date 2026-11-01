@@ -5,6 +5,16 @@ const path = require('path');
 const PORT = process.env.PORT || 3000;
 const PUBLIC_DIR = __dirname;
 
+// Statically referenced assets so any file tracer (like @vercel/nft) bundles them
+const STATIC_ASSETS = [
+  path.join(__dirname, 'data_kitten.js'),
+  path.join(__dirname, 'data_readings.js'),
+  path.join(__dirname, 'data_audio.js'),
+  path.join(__dirname, 'avatar_male.jpg'),
+  path.join(__dirname, 'avatar_female.jpg'),
+  path.join(__dirname, 'index.html')
+];
+
 const MIME_TYPES = {
   '.html': 'text/html; charset=UTF-8',
   '.css': 'text/css; charset=UTF-8',
@@ -130,6 +140,11 @@ const server = http.createServer((req, res) => {
   let reqPath = decodeURI(req.url.split('?')[0]);
   if (reqPath === '/' || reqPath === '') {
     reqPath = '/index.html';
+  }
+
+  if (reqPath === '/favicon.ico') {
+    res.writeHead(204);
+    return res.end();
   }
 
   const filePath = path.join(PUBLIC_DIR, reqPath);
