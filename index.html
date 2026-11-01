@@ -3735,12 +3735,20 @@
       if (skillSelect) skillSelect.value = c.skill || '⚡ Pronunciación Nativa & Fonética Impecable';
 
       updateCatLive();
-      document.getElementById('avatarModal').classList.remove('hidden');
+      const avModal = document.getElementById('avatarModal');
+      if (avModal) {
+        avModal.classList.remove('hidden');
+        avModal.style.display = 'flex';
+      }
       if (window.lucide) lucide.createIcons();
     }
 
     function closeAvatarStudio() {
-      document.getElementById('avatarModal').classList.add('hidden');
+      const avModal = document.getElementById('avatarModal');
+      if (avModal) {
+        avModal.classList.add('hidden');
+        avModal.style.display = 'none';
+      }
     }
 
     function updateCatLive() {
@@ -4014,50 +4022,69 @@
     }
 
     function openLevelPlanModal() {
-      tempModalBaseLevel = userProfile.cefr || 'B2';
-      tempModalTargetGoal = userProfile.goal || 'ielts';
+      try {
+        tempModalBaseLevel = userProfile.cefr || 'B2';
+        tempModalTargetGoal = userProfile.goal || 'ielts';
 
-      const weeks = userProfile.targetWeeks || 12;
-      const weeksInput = document.getElementById('modalCustomWeeksInput');
-      if (weeksInput) weeksInput.value = weeks;
+        const weeks = userProfile.targetWeeks || 12;
+        const weeksInput = document.getElementById('modalCustomWeeksInput');
+        if (weeksInput) weeksInput.value = weeks;
 
-      // Sincronizar fecha en calendario
-      const targetDate = new Date();
-      targetDate.setDate(targetDate.getDate() + (weeks * 7));
-      const yyyy = targetDate.getFullYear();
-      const mm = String(targetDate.getMonth() + 1).padStart(2, '0');
-      const dd = String(targetDate.getDate()).padStart(2, '0');
-      const dateInput = document.getElementById('modalTargetDateInput');
-      if (dateInput) {
-        dateInput.value = `${yyyy}-${mm}-${dd}`;
-        const todayStr = new Date().toISOString().split('T')[0];
-        dateInput.min = todayStr;
+        // Sincronizar fecha en calendario
+        const targetDate = new Date();
+        targetDate.setDate(targetDate.getDate() + (weeks * 7));
+        const yyyy = targetDate.getFullYear();
+        const mm = String(targetDate.getMonth() + 1).padStart(2, '0');
+        const dd = String(targetDate.getDate()).padStart(2, '0');
+        const dateInput = document.getElementById('modalTargetDateInput');
+        if (dateInput) {
+          dateInput.value = `${yyyy}-${mm}-${dd}`;
+          const todayStr = new Date().toISOString().split('T')[0];
+          dateInput.min = todayStr;
+        }
+
+        // Sincronizar Horas y Minutos
+        const totalMins = parseInt(userProfile.duration) || 30;
+        const h = Math.floor(totalMins / 60);
+        const m = totalMins % 60;
+        const hInput = document.getElementById('modalDailyHoursInput');
+        const mInput = document.getElementById('modalDailyMinutesInput');
+        if (hInput) hInput.value = h;
+        if (mInput) mInput.value = m;
+
+        // Sincronizar selección visual de nivel base
+        selectModalBaseLevel(tempModalBaseLevel);
+        // Sincronizar selección visual de objetivo
+        selectModalTargetGoal(tempModalTargetGoal);
+
+        // Sincronizar cuadrícula de días semanales
+        initModalWeeklyScheduleUI();
+
+        const modal = document.getElementById('levelPlanModal');
+        if (modal) {
+          modal.classList.remove('hidden');
+          modal.style.display = 'flex';
+        }
+        updateModalPlanCalculation();
+        if (window.lucide && typeof lucide.createIcons === 'function') {
+          lucide.createIcons();
+        }
+      } catch (err) {
+        console.error('Error opening levelPlanModal:', err);
+        const modal = document.getElementById('levelPlanModal');
+        if (modal) {
+          modal.classList.remove('hidden');
+          modal.style.display = 'flex';
+        }
       }
-
-      // Sincronizar Horas y Minutos
-      const totalMins = parseInt(userProfile.duration) || 30;
-      const h = Math.floor(totalMins / 60);
-      const m = totalMins % 60;
-      const hInput = document.getElementById('modalDailyHoursInput');
-      const mInput = document.getElementById('modalDailyMinutesInput');
-      if (hInput) hInput.value = h;
-      if (mInput) mInput.value = m;
-
-      // Sincronizar selección visual de nivel base
-      selectModalBaseLevel(tempModalBaseLevel);
-      // Sincronizar selección visual de objetivo
-      selectModalTargetGoal(tempModalTargetGoal);
-
-      // Sincronizar cuadrícula de días semanales
-      initModalWeeklyScheduleUI();
-
-      document.getElementById('levelPlanModal').classList.remove('hidden');
-      updateModalPlanCalculation();
-      lucide.createIcons();
     }
 
     function closeLevelPlanModal() {
-      document.getElementById('levelPlanModal').classList.add('hidden');
+      const modal = document.getElementById('levelPlanModal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+      }
     }
 
     function selectModalBaseLevel(lvl) {
@@ -5340,8 +5367,12 @@
           : '<i data-lucide="award" class="w-4 h-4"></i> <span>Dominar Lección (+50 XP)</span>';
       }
 
-      document.getElementById('grammarLessonModal').classList.remove('hidden');
-      lucide.createIcons();
+      const gm = document.getElementById('grammarLessonModal');
+      if (gm) {
+        gm.classList.remove('hidden');
+        gm.style.display = 'flex';
+      }
+      if (window.lucide && typeof lucide.createIcons === 'function') lucide.createIcons();
     }
 
     function selectGrammarQuizOption(qIdx, optIdx, isCorrect) {
@@ -5369,7 +5400,11 @@
     }
 
     function closeGrammarLessonModal() {
-      document.getElementById('grammarLessonModal').classList.add('hidden');
+      const gm = document.getElementById('grammarLessonModal');
+      if (gm) {
+        gm.classList.add('hidden');
+        gm.style.display = 'none';
+      }
       activeGrammarLessonId = null;
     }
 
@@ -6506,8 +6541,14 @@
       renderKanban();
     }
 
-    function openAddCardModal() { document.getElementById('addCardModal').classList.remove('hidden'); }
-    function closeAddCardModal() { document.getElementById('addCardModal').classList.add('hidden'); }
+    function openAddCardModal() {
+      const m = document.getElementById('addCardModal');
+      if (m) { m.classList.remove('hidden'); m.style.display = 'flex'; }
+    }
+    function closeAddCardModal() {
+      const m = document.getElementById('addCardModal');
+      if (m) { m.classList.add('hidden'); m.style.display = 'none'; }
+    }
 
     function handleCreateCard(e) {
       e.preventDefault();
@@ -6549,13 +6590,21 @@
       currentFlashcardIndex = 0;
       isFlashcardFlipped = false;
 
-      document.getElementById('flashcardStudyModal').classList.remove('hidden');
+      const m = document.getElementById('flashcardStudyModal');
+      if (m) {
+        m.classList.remove('hidden');
+        m.style.display = 'flex';
+      }
       renderCurrentFlashcard();
-      lucide.createIcons();
+      if (window.lucide && typeof lucide.createIcons === 'function') lucide.createIcons();
     }
 
     function closeFlashcardStudyModal() {
-      document.getElementById('flashcardStudyModal').classList.add('hidden');
+      const m = document.getElementById('flashcardStudyModal');
+      if (m) {
+        m.classList.add('hidden');
+        m.style.display = 'none';
+      }
       renderKanban();
     }
 
@@ -7230,13 +7279,17 @@
       const modal = document.getElementById('alarmSavedSuccessModal');
       if (modal) {
         modal.classList.remove('hidden');
-        lucide.createIcons();
+        modal.style.display = 'flex';
+        if (window.lucide && typeof lucide.createIcons === 'function') lucide.createIcons();
       }
     }
 
     function closeAlarmSavedModal() {
       const modal = document.getElementById('alarmSavedSuccessModal');
-      if (modal) modal.classList.add('hidden');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+      }
     }
 
     function goToPlanDiarioFromAlarmModal() {
@@ -7577,13 +7630,17 @@ ${eventsIcs}END:VCALENDAR`;
       const modal = document.getElementById('calendarSyncPreviewModal');
       if (modal) {
         modal.classList.remove('hidden');
-        lucide.createIcons();
+        modal.style.display = 'flex';
+        if (window.lucide && typeof lucide.createIcons === 'function') lucide.createIcons();
       }
     }
 
     function closeCalendarConnectionModal() {
       const modal = document.getElementById('calendarSyncPreviewModal');
-      if (modal) modal.classList.add('hidden');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+      }
     }
 
     function exportProgressCSV() {
@@ -7720,6 +7777,14 @@ ${eventsIcs}END:VCALENDAR`;
     // INICIALIZACIÓN GENERAL
     // ========================================================
     window.addEventListener('DOMContentLoaded', () => {
+      // Limpiar cualquier residuo de display inline en modales
+      try {
+        document.querySelectorAll('.fixed.inset-0:not(#loginModal)').forEach(m => {
+          m.classList.add('hidden');
+          m.style.removeProperty('display');
+        });
+      } catch(e){}
+
       try { initAuthCheck(); } catch(e) { console.warn('initAuthCheck:', e); }
       try { applyCatToUI(); } catch(e) { console.warn('applyCatToUI:', e); }
       try { renderKanban(); } catch(e) { console.warn('renderKanban:', e); }
