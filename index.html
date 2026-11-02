@@ -191,7 +191,7 @@
     <!-- ======================================================== -->
     <!-- BARRA LATERAL IZQUIERDA (SIDEBAR / DRAWER EN MÓVIL)       -->
     <!-- ======================================================== -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 max-w-[85vw] bg-white border-r border-slate-200 flex-shrink-0 flex flex-col justify-between z-50 md:z-30 h-full md:h-screen md:sticky md:top-0 shadow-2xl md:shadow-sm transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out overflow-y-auto">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 w-80 max-w-[88vw] bg-white border-r border-slate-200 flex-shrink-0 flex flex-col justify-between z-50 md:z-30 h-full md:h-screen md:sticky md:top-0 shadow-2xl md:shadow-sm transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out overflow-y-auto">
       
       <div>
         <!-- Cabecera de la Barra Lateral: Marca y Perfil con Avatar de Gato -->
@@ -3927,6 +3927,11 @@
     function switchTab(tabId) {
       // Cierra automáticamente el Drawer lateral en dispositivos móviles
       try { closeMobileDrawer(); } catch(e){}
+      try {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const mainEl = document.querySelector('main');
+        if (mainEl) mainEl.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch(e){}
 
       document.querySelectorAll('.view-panel').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -4071,6 +4076,7 @@
     }
 
     function openAvatarStudio() {
+      try { closeMobileDrawer(); } catch(e){}
       const c = userProfile.cat || { border: 'gold', photo: 'auto', skill: '⚡ Pronunciación Nativa & Fonética Impecable' };
       const currentName = userProfile.name || 'Whiskers Scholar';
       const nameInput = document.getElementById('avatarNameInput');
@@ -4393,6 +4399,7 @@
     let lastTestRecommendedLevel = null;
 
     function openLevelPlanModal(recommendedLevel = null) {
+      try { closeMobileDrawer(); } catch(e){}
       try {
         if (recommendedLevel) {
           lastTestRecommendedLevel = recommendedLevel;
@@ -7893,6 +7900,7 @@
     let testScore = 0;
 
     function openPlacementModal() {
+      try { closeMobileDrawer(); } catch(e){}
       currentQIndex = 0;
       testScore = 0;
       const modal = document.getElementById('placementModal');
