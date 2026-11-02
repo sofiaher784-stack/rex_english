@@ -117,12 +117,43 @@
   <!-- CONTENEDOR PRINCIPAL DE LA APLICACIÓN (PROTEGIDO)        -->
   <!-- Solo se muestra cuando el usuario está autenticado       -->
   <!-- ======================================================== -->
-  <div id="appContainer" class="hidden min-h-screen w-full flex flex-col md:flex-row">
+  <!-- Backdrop oscuro para Drawer en móvil -->
+  <div id="mobileDrawerBackdrop" onclick="closeMobileDrawer()" class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-40 hidden md:hidden transition-opacity opacity-0" aria-hidden="true"></div>
+
+  <div id="appContainer" class="hidden min-h-screen w-full flex flex-col md:flex-row relative">
+
+    <!-- BARRA SUPERIOR MÓVIL (MOBILE TOP BAR - Visible solo en < 768px) -->
+    <header id="mobileTopBar" class="md:hidden sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-3.5 py-2.5 flex items-center justify-between shadow-xs">
+      <div class="flex items-center space-x-2.5">
+        <button type="button" onclick="openMobileDrawer()" class="p-2 rounded-xl text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 border border-slate-200/80 transition flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-indigo-500" aria-label="Abrir menú de navegación">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+        <div class="flex items-center space-x-2">
+          <div class="w-7 h-7 rounded-xl bg-gradient-to-tr from-amber-50 to-orange-100 border border-orange-200 flex items-center justify-center shadow-xs">
+            <span class="text-sm">🐾</span>
+          </div>
+          <span class="font-black text-sm text-slate-800 tracking-tight">Rex<span class="text-indigo-600">ing</span></span>
+        </div>
+      </div>
+
+      <!-- Perfil compacto y Avatar en Top Bar Móvil -->
+      <div class="flex items-center space-x-2">
+        <div class="text-right leading-none">
+          <span id="mobileTopBarRole" class="text-[9px] font-black text-indigo-700 uppercase tracking-tight block">Estudiante</span>
+          <span id="mobileTopBarEmail" class="text-[9px] font-mono text-slate-400 truncate max-w-[110px] block">estudiante@fluencyos.com</span>
+        </div>
+        <div id="mobileTopBarAvatar" class="cursor-pointer" onclick="openAvatarStudio()" title="Personalizar Avatar">
+          <div class="w-8 h-8 rounded-full border border-amber-400 bg-indigo-50 overflow-hidden flex items-center justify-center shadow-xs">
+            <img src="avatar_male.jpg" alt="Avatar" class="w-full h-full object-cover">
+          </div>
+        </div>
+      </div>
+    </header>
 
     <!-- ======================================================== -->
-    <!-- BARRA LATERAL IZQUIERDA (SIDEBAR DE NAVEGACIÓN)         -->
+    <!-- BARRA LATERAL IZQUIERDA (SIDEBAR / DRAWER EN MÓVIL)       -->
     <!-- ======================================================== -->
-    <aside id="sidebar" class="w-full md:w-72 bg-white border-r border-slate-200 flex-shrink-0 flex flex-col justify-between z-30 md:h-screen md:sticky md:top-0 shadow-sm">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 max-w-[85vw] bg-white border-r border-slate-200 flex-shrink-0 flex flex-col justify-between z-50 md:z-30 h-full md:h-screen md:sticky md:top-0 shadow-2xl md:shadow-sm transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out overflow-y-auto">
       
       <div>
         <!-- Cabecera de la Barra Lateral: Marca y Perfil con Avatar de Gato -->
@@ -176,8 +207,8 @@
                 <p class="text-[10px] text-slate-400 font-medium">A1-C1 • IELTS & TOEFL</p>
               </div>
             </div>
-            <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-slate-500 hover:text-indigo-600">
-              <i data-lucide="menu" class="w-5 h-5"></i>
+            <button type="button" onclick="closeMobileDrawer()" class="md:hidden p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition" aria-label="Cerrar menú">
+              <i data-lucide="x" class="w-5 h-5"></i>
             </button>
           </div>
 
@@ -347,7 +378,7 @@
   <!-- ======================================================== -->
   <!-- CONTENEDOR PRINCIPAL DERECHO (VISTAS)                   -->
   <!-- ======================================================== -->
-  <main class="flex-1 min-h-screen overflow-y-auto p-4 sm:p-6 lg:p-8">
+  <main class="flex-1 min-h-screen overflow-y-auto p-3 sm:p-6 lg:p-8 w-full max-w-full overflow-x-hidden">
 
     <!-- ========================================== -->
     <!-- 1. PESTAÑA: TABLERO DE VOCABULARIO (SPACED REPETITION) -->
@@ -756,6 +787,28 @@
       <!-- Cuadrícula de Lecciones de Gramática -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="grammarLessonsGrid">
         <!-- Renderizado dinámico con JS -->
+      </div>
+
+      <!-- Paginación de Lecciones de Gramática (9 por vista) -->
+      <div id="grammarPagination" class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-xs">
+        <div class="text-xs text-slate-500 font-medium flex items-center gap-1.5">
+          <span>Página <span id="grammarPaginationCurrent" class="font-bold text-slate-800">1</span> de <span id="grammarPaginationTotal" class="font-bold text-slate-800">1</span></span>
+          <span class="text-slate-300">•</span>
+          <span id="grammarPaginationSummary" class="text-slate-600 font-medium">Mostrando 1 - 9</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button type="button" id="grammarPrevBtn" onclick="changeGrammarPage(-1)" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 transition flex items-center gap-1.5 shadow-xs disabled:opacity-40 disabled:cursor-not-allowed">
+            <i data-lucide="chevron-left" class="w-4 h-4"></i>
+            <span>Anterior</span>
+          </button>
+          <div id="grammarPageNumbers" class="flex items-center gap-1.5">
+            <!-- Píldoras numéricas dinámicas -->
+          </div>
+          <button type="button" id="grammarNextBtn" onclick="changeGrammarPage(1)" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 transition flex items-center gap-1.5 shadow-xs disabled:opacity-40 disabled:cursor-not-allowed">
+            <span>Siguiente</span>
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </button>
+        </div>
       </div>
 
     </div>
@@ -3246,6 +3299,12 @@
       const topEmailEl = document.getElementById('topCardUserEmail');
       if (topEmailEl) topEmailEl.textContent = session.email || session.username || '';
 
+      // Control barra superior móvil (Mobile Top Bar)
+      const mobileTopBarRoleEl = document.getElementById('mobileTopBarRole');
+      if (mobileTopBarRoleEl) mobileTopBarRoleEl.textContent = session.role || 'Estudiante';
+      const mobileTopBarEmailEl = document.getElementById('mobileTopBarEmail');
+      if (mobileTopBarEmailEl) mobileTopBarEmailEl.textContent = session.email || session.username || '';
+
       // Control inferior
       const emailEl = document.getElementById('sidebarSessionUserEmail');
       if (emailEl) emailEl.textContent = session.email || session.username || '';
@@ -3820,6 +3879,9 @@
     // 3. MANEJO DE VISTAS Y NAVEGACIÓN
     // ========================================================
     function switchTab(tabId) {
+      // Cierra automáticamente el Drawer lateral en dispositivos móviles
+      try { closeMobileDrawer(); } catch(e){}
+
       document.querySelectorAll('.view-panel').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.remove('active', 'bg-indigo-600', 'text-white', 'shadow-sm', 'shadow-indigo-100');
@@ -3862,9 +3924,46 @@
       lucide.createIcons();
     }
 
-    function toggleMobileMenu() {
-      document.getElementById('sidebarNav').classList.toggle('hidden');
+    function openMobileDrawer() {
+      const sidebar = document.getElementById('sidebar');
+      const backdrop = document.getElementById('mobileDrawerBackdrop');
+      if (sidebar) {
+        sidebar.classList.remove('-translate-x-full');
+        sidebar.classList.add('translate-x-0');
+      }
+      if (backdrop) {
+        backdrop.classList.remove('hidden');
+        setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
+      }
+      if (window.lucide) lucide.createIcons();
     }
+
+    function closeMobileDrawer() {
+      const sidebar = document.getElementById('sidebar');
+      const backdrop = document.getElementById('mobileDrawerBackdrop');
+      if (sidebar) {
+        sidebar.classList.remove('translate-x-0');
+        sidebar.classList.add('-translate-x-full');
+      }
+      if (backdrop) {
+        backdrop.classList.add('opacity-0');
+        setTimeout(() => backdrop.classList.add('hidden'), 200);
+      }
+    }
+
+    function toggleMobileMenu() {
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar && sidebar.classList.contains('translate-x-0')) {
+        closeMobileDrawer();
+      } else {
+        openMobileDrawer();
+      }
+    }
+
+    // Cerrar con tecla Escape en móvil
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMobileDrawer();
+    });
 
     // ========================================================
     // 4. ESTUDIO DE FOTO DE PERFIL (MASCULINO / FEMENINO / AUTO)
@@ -4064,6 +4163,18 @@
       const coachAvatarCont = document.getElementById('coachAvatarContainer');
       if (coachAvatarCont && typeof createFriendlyCoachSvg === 'function') {
         try { coachAvatarCont.innerHTML = createFriendlyCoachSvg(); } catch(e){}
+      }
+
+      // Mobile Top Bar Avatar
+      const mobileTopBarAvatarEl = document.getElementById('mobileTopBarAvatar');
+      if (mobileTopBarAvatarEl) {
+        const photo = (userProfile.cat && userProfile.cat.photo) || 'male';
+        const img = photo === 'female' ? 'avatar_female.jpg' : 'avatar_male.jpg';
+        mobileTopBarAvatarEl.innerHTML = `
+          <div class="w-8 h-8 rounded-full border border-amber-400 bg-indigo-50 overflow-hidden flex items-center justify-center shadow-xs">
+            <img src="${img}" alt="Avatar" class="w-full h-full object-cover">
+          </div>
+        `;
       }
     }
 
@@ -5373,6 +5484,8 @@
 
     let activeGrammarFilter = 'ALL';
     let activeGrammarLessonId = null;
+    let grammarCurrentPage = 1;
+    const GRAMMAR_PAGE_SIZE = 9;
 
     function renderGrammarView() {
       if (!userProfile.completedGrammar) userProfile.completedGrammar = ['gram-b2-1'];
@@ -5447,6 +5560,7 @@
 
     function filterGrammarLessons(levelFilter) {
       activeGrammarFilter = levelFilter;
+      grammarCurrentPage = 1;
 
       // Actualizar aspecto visual de los botones de filtro
       document.querySelectorAll('.grammar-filter-btn').forEach(btn => {
@@ -5459,6 +5573,81 @@
       }
 
       renderGrammarLessonsList();
+    }
+
+    function changeGrammarPage(delta) {
+      setGrammarPage(grammarCurrentPage + delta);
+    }
+
+    function setGrammarPage(newPage) {
+      grammarCurrentPage = newPage;
+      renderGrammarLessonsList();
+      const container = document.getElementById('grammarLessonsGrid');
+      if (container) {
+        const yOffset = -100;
+        const y = container.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+      }
+    }
+
+    function renderGrammarPagination(totalFiltered, totalPages, startIndex, endIndex) {
+      const pagContainer = document.getElementById('grammarPagination');
+      if (!pagContainer) return;
+
+      if (totalFiltered === 0) {
+        pagContainer.classList.add('hidden');
+        return;
+      }
+      pagContainer.classList.remove('hidden');
+
+      const curEl = document.getElementById('grammarPaginationCurrent');
+      const totEl = document.getElementById('grammarPaginationTotal');
+      const sumEl = document.getElementById('grammarPaginationSummary');
+      const prevBtn = document.getElementById('grammarPrevBtn');
+      const nextBtn = document.getElementById('grammarNextBtn');
+      const pageNumsContainer = document.getElementById('grammarPageNumbers');
+
+      if (curEl) curEl.textContent = grammarCurrentPage;
+      if (totEl) totEl.textContent = totalPages;
+      if (sumEl) sumEl.textContent = `Mostrando ${startIndex + 1} - ${endIndex} de ${totalFiltered}`;
+
+      // Configurar estado del botón Anterior
+      if (prevBtn) {
+        const isFirst = grammarCurrentPage <= 1;
+        prevBtn.disabled = isFirst;
+        if (isFirst) {
+          prevBtn.className = "px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-50 text-slate-400 border border-slate-200 opacity-40 cursor-not-allowed flex items-center gap-1.5";
+        } else {
+          prevBtn.className = "px-3 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 transition flex items-center gap-1.5 shadow-xs cursor-pointer";
+        }
+      }
+
+      // Configurar estado del botón Siguiente
+      if (nextBtn) {
+        const isLast = grammarCurrentPage >= totalPages;
+        nextBtn.disabled = isLast;
+        if (isLast) {
+          nextBtn.className = "px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-50 text-slate-400 border border-slate-200 opacity-40 cursor-not-allowed flex items-center gap-1.5";
+        } else {
+          nextBtn.className = "px-3 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 transition flex items-center gap-1.5 shadow-xs cursor-pointer";
+        }
+      }
+
+      // Renderizar números de página
+      if (pageNumsContainer) {
+        pageNumsContainer.innerHTML = '';
+        for (let p = 1; p <= totalPages; p++) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.onclick = () => setGrammarPage(p);
+          const isActive = (p === grammarCurrentPage);
+          btn.className = isActive
+            ? 'w-8 h-8 rounded-xl text-xs font-black bg-indigo-600 text-white shadow-xs transition flex items-center justify-center cursor-default'
+            : 'w-8 h-8 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition flex items-center justify-center cursor-pointer';
+          btn.textContent = p;
+          pageNumsContainer.appendChild(btn);
+        }
+      }
     }
 
     function renderGrammarLessonsList() {
@@ -5479,8 +5668,23 @@
         filtered = filtered.filter(l => l.level === activeGrammarFilter);
       }
 
+      const totalFiltered = filtered.length;
+      const totalPages = Math.max(1, Math.ceil(totalFiltered / GRAMMAR_PAGE_SIZE));
+      if (grammarCurrentPage > totalPages) grammarCurrentPage = totalPages;
+      if (grammarCurrentPage < 1) grammarCurrentPage = 1;
+
+      const startIndex = (grammarCurrentPage - 1) * GRAMMAR_PAGE_SIZE;
+      const endIndex = Math.min(startIndex + GRAMMAR_PAGE_SIZE, totalFiltered);
+      const pageLessons = filtered.slice(startIndex, endIndex);
+
       const countEl = document.getElementById('grammarShowingCount');
-      if (countEl) countEl.textContent = filtered.length;
+      if (countEl) {
+        if (totalFiltered === 0) {
+          countEl.textContent = '0';
+        } else {
+          countEl.textContent = `${startIndex + 1} - ${endIndex} de ${totalFiltered}`;
+        }
+      }
 
       const levelColorMap = {
         A1: { bg: 'bg-emerald-50', text: 'text-emerald-800', border: 'border-emerald-200', badge: 'bg-emerald-100 text-emerald-800' },
@@ -5492,46 +5696,56 @@
       };
 
       container.innerHTML = '';
-      filtered.forEach(lesson => {
-        const isCompleted = (userProfile.completedGrammar || []).includes(lesson.id);
-        const col = levelColorMap[lesson.level] || levelColorMap.B2;
-
-        const card = document.createElement('div');
-        card.className = `p-4 sm:p-5 rounded-2xl border transition-all duration-200 bg-white hover:shadow-md flex flex-col justify-between space-y-3.5 ${isCompleted ? 'border-emerald-300 ring-1 ring-emerald-200/50' : 'border-slate-200'}`;
-
-        card.innerHTML = `
-          <div class="space-y-2">
-            <div class="flex items-center justify-between">
-              <span class="text-[11px] font-black px-2.5 py-0.5 rounded-full ${col.badge}">
-                ${lesson.level}
-              </span>
-              <div class="flex items-center gap-1.5">
-                ${isCompleted ? '<span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 flex items-center gap-1">✓ Dominada</span>' : '<span class="text-[10px] font-bold text-slate-400">+50 XP</span>'}
-              </div>
-            </div>
-
-            <h4 class="font-extrabold text-sm text-slate-900 leading-snug hover:text-indigo-600 transition">
-              ${lesson.title}
-            </h4>
-
-            <p class="text-xs text-slate-500 leading-relaxed line-clamp-2">
-              ${lesson.desc}
-            </p>
-          </div>
-
-          <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
-            <span class="text-[11px] font-semibold text-slate-400 flex items-center gap-1">
-              <i data-lucide="layers" class="w-3.5 h-3.5 text-slate-400"></i> ${lesson.category}
-            </span>
-            <button onclick="openGrammarLessonModal('${lesson.id}')" class="px-3 py-1.5 rounded-xl text-xs font-bold ${isCompleted ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs shadow-indigo-100'} transition flex items-center gap-1">
-              <span>${isCompleted ? 'Repasar' : 'Estudiar'}</span>
-              <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
-            </button>
+      if (pageLessons.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full p-8 text-center bg-white rounded-2xl border border-slate-200 space-y-2">
+            <p class="text-sm font-bold text-slate-700">No hay módulos disponibles para este filtro.</p>
+            <p class="text-xs text-slate-500">Selecciona "Todas" para explorar el catálogo completo.</p>
           </div>
         `;
-        container.appendChild(card);
-      });
+      } else {
+        pageLessons.forEach(lesson => {
+          const isCompleted = (userProfile.completedGrammar || []).includes(lesson.id);
+          const col = levelColorMap[lesson.level] || levelColorMap.B2;
 
+          const card = document.createElement('div');
+          card.className = `p-4 sm:p-5 rounded-2xl border transition-all duration-200 bg-white hover:shadow-md flex flex-col justify-between space-y-3.5 ${isCompleted ? 'border-emerald-300 ring-1 ring-emerald-200/50' : 'border-slate-200'}`;
+
+          card.innerHTML = `
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-black px-2.5 py-0.5 rounded-full ${col.badge}">
+                  ${lesson.level}
+                </span>
+                <div class="flex items-center gap-1.5">
+                  ${isCompleted ? '<span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 flex items-center gap-1">✓ Dominada</span>' : '<span class="text-[10px] font-bold text-slate-400">+50 XP</span>'}
+                </div>
+              </div>
+
+              <h4 class="font-extrabold text-sm text-slate-900 leading-snug hover:text-indigo-600 transition">
+                ${lesson.title}
+              </h4>
+
+              <p class="text-xs text-slate-500 leading-relaxed line-clamp-2">
+                ${lesson.desc}
+              </p>
+            </div>
+
+            <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
+              <span class="text-[11px] font-semibold text-slate-400 flex items-center gap-1">
+                <i data-lucide="layers" class="w-3.5 h-3.5 text-slate-400"></i> ${lesson.category}
+              </span>
+              <button onclick="openGrammarLessonModal('${lesson.id}')" class="px-3 py-1.5 rounded-xl text-xs font-bold ${isCompleted ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs shadow-indigo-100'} transition flex items-center gap-1">
+                <span>${isCompleted ? 'Repasar' : 'Estudiar'}</span>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      }
+
+      renderGrammarPagination(totalFiltered, totalPages, startIndex, endIndex);
       lucide.createIcons();
     }
 

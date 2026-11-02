@@ -19,3 +19,7 @@ test_kitten_svg.js
 # OS generated
 Thumbs.db
 .DS_Store
+
+# SDD Specifications
+specs/
+
