@@ -131,32 +131,61 @@
 
   <div id="appContainer" class="hidden min-h-screen w-full flex flex-col md:flex-row relative">
 
-    <!-- BARRA SUPERIOR MÓVIL (MOBILE TOP BAR - Visible solo en < 768px) -->
-    <header id="mobileTopBar" class="md:hidden sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-3.5 py-2.5 flex items-center justify-between shadow-xs">
+    <!-- BARRA SUPERIOR MÓVIL (MOBILE TOP BAR - Visible solo en < 768px - Exacta a Imagen 2) -->
+    <header id="mobileTopBar" class="md:hidden sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-2.5 flex items-center justify-between shadow-xs">
+      <!-- Izquierda: Logo Oficial Rexing + Subtítulo -->
       <div class="flex items-center space-x-2.5">
-        <button type="button" onclick="openMobileDrawer()" class="p-2 rounded-xl text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 border border-slate-200/80 transition flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-indigo-500" aria-label="Abrir menú de navegación">
-          <i data-lucide="menu" class="w-5 h-5"></i>
-        </button>
-        <div class="flex items-center space-x-2">
-          <div class="w-7 h-7 rounded-xl bg-gradient-to-tr from-amber-50 to-orange-100 border border-orange-200 flex items-center justify-center shadow-xs">
-            <span class="text-sm">🐾</span>
-          </div>
-          <span class="font-black text-sm text-slate-800 tracking-tight">Rex<span class="text-indigo-600">ing</span></span>
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-50 to-orange-100 border border-orange-200/90 flex items-center justify-center p-1 shadow-sm shadow-orange-200/50 flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="w-8 h-8 drop-shadow-xs">
+            <defs>
+              <linearGradient id="pawBaseGrad_top" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#FFFFFF"/>
+                <stop offset="100%" stop-color="#FFF7ED"/>
+              </linearGradient>
+              <linearGradient id="pawOrangeGrad1_top" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FB923C"/>
+                <stop offset="100%" stop-color="#EA580C"/>
+              </linearGradient>
+              <linearGradient id="pawOrangeGrad2_top" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FDBA74"/>
+                <stop offset="100%" stop-color="#F97316"/>
+              </linearGradient>
+              <linearGradient id="pawPadGrad_top" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#FDA4AF"/>
+                <stop offset="100%" stop-color="#F43F5E"/>
+              </linearGradient>
+              <clipPath id="pawClip_top">
+                <path d="M 23 34 C 17 26 25 15 34 22 C 36 14 47 11 52 18 C 57 11 68 14 70 22 C 79 16 87 27 80 36 C 84 50 84 66 81 78 C 78 87 67 91 52 91 C 37 91 26 87 23 78 C 20 66 20 50 23 34 Z"/>
+              </clipPath>
+            </defs>
+            <path d="M 23 34 C 17 26 25 15 34 22 C 36 14 47 11 52 18 C 57 11 68 14 70 22 C 79 16 87 27 80 36 C 84 50 84 66 81 78 C 78 87 67 91 52 91 C 37 91 26 87 23 78 C 20 66 20 50 23 34 Z"
+                  fill="url(#pawBaseGrad_top)" stroke="#FDBA74" stroke-width="2.5" stroke-linejoin="round"/>
+            <g clip-path="url(#pawClip_top)">
+              <path d="M 58 13 C 65 10 72 16 72 23 C 80 18 88 28 82 38 C 86 52 86 64 83 72 C 74 65 67 52 68 38 C 68 27 62 19 58 13 Z" fill="url(#pawOrangeGrad1_top)"/>
+              <path d="M 19 60 C 25 54 34 56 37 64 C 40 73 36 83 28 86 C 24 82 20 72 19 60 Z" fill="url(#pawOrangeGrad2_top)"/>
+              <circle cx="34" cy="22" r="4.2" fill="#F97316"/>
+              <circle cx="71" cy="79" r="4" fill="#FB923C"/>
+            </g>
+            <ellipse cx="28" cy="34" rx="5.5" ry="7.5" transform="rotate(-25 28 34)" fill="url(#pawPadGrad_top)"/>
+            <ellipse cx="43" cy="26" rx="6" ry="8.5" transform="rotate(-8 43 26)" fill="url(#pawPadGrad_top)"/>
+            <ellipse cx="60" cy="26" rx="6" ry="8.5" transform="rotate(8 60 26)" fill="url(#pawPadGrad_top)"/>
+            <ellipse cx="75" cy="34" rx="5.5" ry="7.5" transform="rotate(25 75 34)" fill="url(#pawPadGrad_top)"/>
+            <path d="M 52 49 C 43 43 33 51 34 62 C 35 73 45 78 52 79 C 59 78 69 73 70 62 C 71 51 61 43 52 49 Z" fill="url(#pawPadGrad_top)"/>
+            <ellipse cx="41.5" cy="24" rx="2" ry="3.2" transform="rotate(-8 41.5 24)" fill="#FFFFFF" opacity="0.6"/>
+            <ellipse cx="58.5" cy="24" rx="2" ry="3.2" transform="rotate(8 58.5 24)" fill="#FFFFFF" opacity="0.6"/>
+            <ellipse cx="49" cy="55" rx="4.5" ry="2.2" fill="#FFFFFF" opacity="0.5"/>
+          </svg>
+        </div>
+        <div>
+          <span class="font-black text-lg tracking-tight text-slate-900">Rex<span class="text-indigo-600">ing</span></span>
+          <p class="text-[10px] text-slate-400 font-medium leading-none">A1-C1 • IELTS & TOEFL</p>
         </div>
       </div>
 
-      <!-- Perfil compacto y Avatar en Top Bar Móvil -->
-      <div class="flex items-center space-x-2">
-        <div class="text-right leading-none">
-          <span id="mobileTopBarRole" class="text-[9px] font-black text-indigo-700 uppercase tracking-tight block">Estudiante</span>
-          <span id="mobileTopBarEmail" class="text-[9px] font-mono text-slate-400 truncate max-w-[110px] block">estudiante@fluencyos.com</span>
-        </div>
-        <div id="mobileTopBarAvatar" class="cursor-pointer" onclick="openAvatarStudio()" title="Personalizar Avatar">
-          <div class="w-8 h-8 rounded-full border border-amber-400 bg-indigo-50 overflow-hidden flex items-center justify-center shadow-xs">
-            <img src="avatar_male.jpg" alt="Avatar" class="w-full h-full object-cover">
-          </div>
-        </div>
-      </div>
+      <!-- Derecha: Botón con las 3 rayas (Menú hamburguesa) -->
+      <button type="button" onclick="openMobileDrawer()" class="p-2.5 rounded-xl text-slate-600 hover:text-indigo-600 hover:bg-slate-100 active:scale-95 transition flex items-center justify-center focus:outline-none" aria-label="Abrir menú de navegación">
+        <i data-lucide="menu" class="w-6 h-6"></i>
+      </button>
     </header>
 
     <!-- ======================================================== -->
