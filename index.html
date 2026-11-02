@@ -822,8 +822,8 @@
     </div>
 
     <!-- MODAL DE ESTUDIO DE LECCIÓN DE GRAMÁTICA -->
-    <div id="grammarLessonModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
-      <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 shadow-2xl border border-slate-100 space-y-6">
+    <div id="grammarLessonModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-2.5 sm:p-4 z-50 hidden overflow-y-auto">
+      <div class="bg-white rounded-2xl sm:rounded-3xl max-w-2xl w-full max-h-[92vh] overflow-y-auto p-4 sm:p-6 md:p-8 shadow-2xl border border-slate-100 space-y-5 sm:space-y-6">
         
         <div class="flex items-start justify-between border-b border-slate-100 pb-4">
           <div class="space-y-1">
@@ -831,9 +831,9 @@
               <span id="modalGrammarLevelBadge" class="text-xs font-black px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-800">B2 Upper-Intermediate</span>
               <span id="modalGrammarCategoryBadge" class="text-xs font-bold text-slate-400">Sintaxis & Estructura</span>
             </div>
-            <h3 id="modalGrammarTitle" class="text-xl font-black text-slate-900">Estructuras de Inversión con Adverbios Negativos</h3>
+            <h3 id="modalGrammarTitle" class="text-lg sm:text-xl font-black text-slate-900">Estructuras de Inversión con Adverbios Negativos</h3>
           </div>
-          <button onclick="closeGrammarLessonModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">✕</button>
+          <button onclick="closeGrammarLessonModal()" class="w-9 h-9 sm:w-8 sm:h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition flex-shrink-0" aria-label="Cerrar modal">✕</button>
         </div>
 
         <!-- 1. FUNDAMENTO TEÓRICO -->
@@ -1951,17 +1951,17 @@
   <!-- ========================================================================= -->
   <!-- MODAL: ESTUDIO DE PERSONALIZACIÓN DE GATO AVATAR (MEJORADO)              -->
   <!-- ========================================================================= -->
-  <div id="avatarModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 space-y-5">
+  <div id="avatarModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-2.5 sm:p-4 hidden overflow-y-auto">
+    <div class="bg-white rounded-2xl sm:rounded-3xl max-w-xl w-full max-h-[92vh] overflow-y-auto p-4 sm:p-6 shadow-2xl border border-slate-200 space-y-4 sm:space-y-5">
       
       <div class="flex items-center justify-between pb-3 border-b border-slate-100">
         <div>
           <span class="text-[10px] font-extrabold uppercase tracking-wider text-indigo-700 bg-indigo-50 border border-indigo-200 px-2.5 py-0.5 rounded-full">
             📸 Personalización de Foto de Perfil
           </span>
-          <h3 class="text-lg font-black text-slate-900 mt-1">Foto de Perfil Rexing</h3>
+          <h3 class="text-base sm:text-lg font-black text-slate-900 mt-1">Foto de Perfil Rexing</h3>
         </div>
-        <button onclick="closeAvatarStudio()" class="text-slate-400 hover:text-slate-600">
+        <button onclick="closeAvatarStudio()" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition" aria-label="Cerrar">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
@@ -2063,8 +2063,8 @@
   <!-- ========================================================================= -->
   <!-- MODAL: CONFIGURAR NIVEL BASE Y PLAN PROPUESTO (TODAS LAS SECCIONES)       -->
   <!-- ========================================================================= -->
-  <div id="levelPlanModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4 hidden">
-    <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[92vh] overflow-y-auto p-5 sm:p-7 shadow-2xl border border-slate-200 space-y-6">
+  <div id="levelPlanModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-2.5 sm:p-4 hidden overflow-y-auto">
+    <div class="bg-white rounded-2xl sm:rounded-3xl max-w-3xl w-full max-h-[92vh] overflow-y-auto p-4 sm:p-7 shadow-2xl border border-slate-200 space-y-5 sm:space-y-6">
       
       <!-- Encabezado del Modal -->
       <div class="flex items-start justify-between pb-4 border-b border-slate-100">
@@ -2716,8 +2716,8 @@
   <!-- ========================================================================= -->
   <!-- MODAL: HORARIO Y ALARMAS GUARDADOS CON ÉXITO (EMOCIONANTE & ALEGRE) -->
   <!-- ========================================================================= -->
-  <div id="alarmSavedSuccessModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border-2 border-emerald-300 text-center space-y-5">
+  <div id="alarmSavedSuccessModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden overflow-y-auto">
+    <div class="bg-white rounded-2xl sm:rounded-3xl max-w-md w-full max-h-[92vh] overflow-y-auto p-5 sm:p-8 shadow-2xl border-2 border-emerald-300 text-center space-y-4 sm:space-y-5">
       
       <!-- Icono Celebratorio Animado -->
       <div class="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-indigo-600 text-white flex items-center justify-center shadow-lg shadow-emerald-200 ring-4 ring-emerald-100">
@@ -2785,8 +2785,8 @@
   <!-- ========================================================================= -->
   <!-- MODAL: CONEXIÓN VISUAL CON CALENDARIO & DÍAS DE ALARMA PROGRAMADOS -->
   <!-- ========================================================================= -->
-  <div id="calendarSyncPreviewModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border-2 border-indigo-200 text-center space-y-4">
+  <div id="calendarSyncPreviewModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden overflow-y-auto">
+    <div class="bg-white rounded-2xl sm:rounded-3xl max-w-lg w-full max-h-[92vh] overflow-y-auto p-4 sm:p-7 shadow-2xl border-2 border-indigo-200 text-center space-y-4">
       
       <!-- Icono de Calendario -->
       <div class="mx-auto w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 to-blue-500 text-white flex items-center justify-center shadow-lg shadow-indigo-200 ring-4 ring-indigo-50">
@@ -2828,8 +2828,8 @@
   <!-- ========================================================================= -->
   <!-- MODAL: ESTUDIO DE VOCABULARIO FLASHCARDS (SPACED REPETITION & ACTIVE RECALL) -->
   <!-- ========================================================================= -->
-  <div id="flashcardStudyModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4 hidden">
-    <div class="bg-white rounded-3xl max-w-xl w-full p-5 sm:p-7 shadow-2xl border border-slate-200 space-y-5">
+  <div id="flashcardStudyModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-2.5 sm:p-4 hidden overflow-y-auto">
+    <div class="bg-white rounded-2xl sm:rounded-3xl max-w-xl w-full max-h-[92vh] overflow-y-auto p-4 sm:p-7 shadow-2xl border border-slate-200 space-y-4 sm:space-y-5">
       
       <!-- Encabezado Flashcards -->
       <div class="flex items-center justify-between pb-3 border-b border-slate-100">
@@ -2906,17 +2906,17 @@
   </div>
 
   <!-- MODAL: TEST DIAGNÓSTICO -->
-  <div id="placementModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border border-slate-200">
-      <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+  <div id="placementModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-2.5 sm:p-4 hidden overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[92vh] overflow-y-auto p-4 sm:p-6 shadow-2xl border border-slate-200">
+      <div class="flex items-center justify-between pb-3 sm:pb-4 border-b border-slate-200">
         <div>
           <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full uppercase tracking-wider">
             Evaluación Inicial Adaptativa
           </span>
-          <h2 class="text-xl font-extrabold text-slate-900 mt-1">Diagnóstico de Nivel (A1 a C2)</h2>
+          <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 mt-1">Diagnóstico de Nivel (A1 a C2)</h2>
           <p class="text-xs text-slate-500">Determina tu nivel MCER y calibración para IELTS / TOEFL.</p>
         </div>
-        <button onclick="closePlacementModal()" class="text-slate-400 hover:text-slate-600">
+        <button onclick="closePlacementModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition" aria-label="Cerrar">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
@@ -2974,11 +2974,11 @@
   </div>
 
   <!-- MODAL: AGREGAR TARJETA -->
-  <div id="addCardModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200">
+  <div id="addCardModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-2.5 sm:p-4 hidden overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-lg w-full max-h-[92vh] overflow-y-auto p-4 sm:p-6 shadow-2xl border border-slate-200">
       <div class="flex items-center justify-between pb-3 border-b border-slate-200">
         <h3 class="font-bold text-slate-900 text-base">Agregar Nuevo Concepto</h3>
-        <button onclick="closeAddCardModal()" class="text-slate-400 hover:text-slate-600">
+        <button onclick="closeAddCardModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition" aria-label="Cerrar">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
