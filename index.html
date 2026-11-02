@@ -392,19 +392,21 @@
           </h1>
           <p class="text-xs text-slate-500 mt-0.5">Asimila y consolida vocabulario según la curva del olvido de Ebbinghaus. Entrena con Flashcards o arrastra tarjetas.</p>
         </div>
-        <div class="flex items-center gap-2 w-full sm:w-auto">
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
           <div class="relative flex-1 sm:w-56">
             <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
-            <input type="text" id="filterInput" oninput="renderKanban()" placeholder="Buscar término o traducción..." class="w-full pl-9 pr-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50">
+            <input type="text" id="filterInput" oninput="renderKanban()" placeholder="Buscar término..." class="w-full pl-9 pr-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50">
           </div>
-          <button onclick="openFlashcardStudyModal()" class="flex items-center space-x-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-3.5 py-2 rounded-lg text-xs font-black transition shadow-sm whitespace-nowrap">
-            <i data-lucide="zap" class="w-4 h-4"></i>
-            <span>⚡ Modo Flashcards</span>
-          </button>
-          <button onclick="openAddCardModal()" class="flex items-center space-x-1.5 bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-2 rounded-lg text-xs font-bold transition shadow-sm whitespace-nowrap">
-            <i data-lucide="plus" class="w-4 h-4"></i>
-            <span>+ Agregar</span>
-          </button>
+          <div class="flex items-center gap-2">
+            <button onclick="openFlashcardStudyModal()" class="flex-1 sm:flex-initial flex items-center justify-center space-x-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-3 py-2 rounded-lg text-xs font-black transition shadow-sm whitespace-nowrap">
+              <i data-lucide="zap" class="w-3.5 h-3.5"></i>
+              <span>Flashcards</span>
+            </button>
+            <button onclick="openAddCardModal()" class="flex-1 sm:flex-initial flex items-center justify-center space-x-1.5 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-lg text-xs font-bold transition shadow-sm whitespace-nowrap">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+              <span>Agregar</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -467,7 +469,7 @@
 
       <!-- Columnas KANBAN -->
       <div class="grid grid-cols-1 md:grid-cols-5 gap-4 overflow-x-auto pb-4 items-start">
-        <div class="bg-slate-100 rounded-xl p-3 border border-slate-200 min-h-[480px] flex flex-col" ondragover="allowDrop(event)" ondrop="drop(event, 'new')">
+        <div class="bg-slate-100 rounded-xl p-3 border border-slate-200 min-h-[160px] md:min-h-[480px] flex flex-col" ondragover="allowDrop(event)" ondrop="drop(event, 'new')">
           <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-200">
             <span class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
               <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Por Descubrir
@@ -477,7 +479,7 @@
           <div id="col-cards-new" class="space-y-2.5 flex-1 overflow-y-auto max-h-[600px] pr-1"></div>
         </div>
 
-        <div class="bg-slate-100 rounded-xl p-3 border border-slate-200 min-h-[480px] flex flex-col" ondragover="allowDrop(event)" ondrop="drop(event, 'learning')">
+        <div class="bg-slate-100 rounded-xl p-3 border border-slate-200 min-h-[160px] md:min-h-[480px] flex flex-col" ondragover="allowDrop(event)" ondrop="drop(event, 'learning')">
           <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-200">
             <span class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
               <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> En Práctica
@@ -487,7 +489,7 @@
           <div id="col-cards-learning" class="space-y-2.5 flex-1 overflow-y-auto max-h-[600px] pr-1"></div>
         </div>
 
-        <div class="bg-slate-100 rounded-xl p-3 border border-slate-200 min-h-[480px] flex flex-col" ondragover="allowDrop(event)" ondrop="drop(event, 'reviewing')">
+        <div class="bg-slate-100 rounded-xl p-3 border border-slate-200 min-h-[160px] md:min-h-[480px] flex flex-col" ondragover="allowDrop(event)" ondrop="drop(event, 'reviewing')">
           <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-200">
             <span class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
               <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span> Por Reforzar
@@ -497,7 +499,7 @@
           <div id="col-cards-reviewing" class="space-y-2.5 flex-1 overflow-y-auto max-h-[600px] pr-1"></div>
         </div>
 
-        <div class="bg-slate-100 rounded-xl p-3 border border-slate-200 min-h-[480px] flex flex-col" ondragover="allowDrop(event)" ondrop="drop(event, 'mastered')">
+        <div class="bg-slate-100 rounded-xl p-3 border border-slate-200 min-h-[160px] md:min-h-[480px] flex flex-col" ondragover="allowDrop(event)" ondrop="drop(event, 'mastered')">
           <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-200">
             <span class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
               <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Dominado
@@ -507,7 +509,7 @@
           <div id="col-cards-mastered" class="space-y-2.5 flex-1 overflow-y-auto max-h-[600px] pr-1"></div>
         </div>
 
-        <div class="bg-slate-100 rounded-xl p-3 border border-slate-200 min-h-[480px] flex flex-col" ondragover="allowDrop(event)" ondrop="drop(event, 'challenging')">
+        <div class="bg-slate-100 rounded-xl p-3 border border-slate-200 min-h-[160px] md:min-h-[480px] flex flex-col" ondragover="allowDrop(event)" ondrop="drop(event, 'challenging')">
           <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-200">
             <span class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
               <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Desafío / Errores
@@ -6015,6 +6017,10 @@
     function selectReading(idx) {
       currentReadingIndex = idx;
       renderReadingsList();
+      if (window.innerWidth < 1024) {
+        const reader = document.getElementById('readingReaderContainer');
+        if (reader) reader.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
     }
 
     function renderActiveReading() {
@@ -6259,6 +6265,10 @@
       }
       currentAudioIndex = idx;
       renderAudioGym();
+      if (window.innerWidth < 1024) {
+        const playerConsole = document.getElementById('audioPlayerConsole');
+        if (playerConsole) playerConsole.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
     }
 
     function renderActiveAudio() {
