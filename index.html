@@ -3045,13 +3045,13 @@
   <!-- ======================================================== -->
   <!-- MODAL DE INICIO DE SESIÓN (LOGIN)                         -->
   <!-- ======================================================== -->
-  <div id="loginModal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-[9999] flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-    <div class="relative w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden my-auto transform transition-all animate-in fade-in zoom-in-95 duration-200">
+  <div id="loginModal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-[9999] flex items-center justify-center p-2.5 sm:p-4 overflow-y-auto">
+    <div class="relative w-full max-w-md bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 overflow-hidden my-auto transform transition-all animate-in fade-in zoom-in-95 duration-200">
       
       <!-- Decoración superior degradada -->
       <div class="h-2.5 w-full bg-gradient-to-r from-violet-600 via-indigo-600 to-amber-500"></div>
 
-      <div class="p-6 sm:p-7 space-y-4">
+      <div class="p-4 sm:p-7 space-y-3.5 sm:space-y-4">
         <!-- Logo y Cabecera -->
         <div class="text-center space-y-1.5">
           <!-- Logo Oficial: Pata de gato con manchas naranjas -->
@@ -3121,7 +3121,7 @@
             <div class="relative">
               <input type="text" id="loginUsername" required autocomplete="username"
                 placeholder="admin@fluencyos.com"
-                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
+                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-base sm:text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
             </div>
           </div>
 
@@ -3131,15 +3131,15 @@
                 <i data-lucide="lock" class="w-3.5 h-3.5 text-indigo-600"></i>
                 <span>Contraseña</span>
               </label>
-              <button type="button" onclick="togglePasswordVisibility()" class="text-[11px] text-indigo-600 hover:text-indigo-800 font-semibold flex items-center gap-1">
-                <i data-lucide="eye" id="loginEyeIcon" class="w-3 h-3"></i>
+              <button type="button" onclick="togglePasswordVisibility()" class="text-[11px] text-indigo-600 hover:text-indigo-800 font-semibold flex items-center gap-1 p-1">
+                <i data-lucide="eye" id="loginEyeIcon" class="w-3.5 h-3.5"></i>
                 <span id="loginEyeLabel">Mostrar</span>
               </button>
             </div>
             <div class="relative">
               <input type="password" id="loginPassword" required autocomplete="current-password"
                 placeholder="••••••••••••"
-                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
+                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-base sm:text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition pr-20">
             </div>
           </div>
 
@@ -3170,7 +3170,7 @@
           <div class="grid grid-cols-3 gap-2 pt-0.5">
             <!-- Botón 1: Administrador -->
             <button type="button" id="roleBtn_admin" onclick="selectRole('admin')"
-              class="role-select-btn p-2.5 text-center border-2 border-slate-200 hover:border-indigo-400 bg-slate-50/90 hover:bg-indigo-50/50 rounded-2xl transition group flex flex-col items-center justify-center gap-0.5 cursor-pointer">
+              class="role-select-btn p-2 sm:p-2.5 min-h-[48px] text-center border-2 border-slate-200 hover:border-indigo-400 bg-slate-50/90 hover:bg-indigo-50/50 rounded-xl sm:rounded-2xl transition group flex flex-col items-center justify-center gap-0.5 cursor-pointer">
               <span class="text-xl">👑</span>
               <span class="text-xs font-black text-slate-800 group-hover:text-indigo-600 truncate w-full">Administrador</span>
               <span class="text-[10px] text-slate-400 font-medium">admin</span>
@@ -3178,7 +3178,7 @@
 
             <!-- Botón 2: Docente -->
             <button type="button" id="roleBtn_teacher" onclick="selectRole('teacher')"
-              class="role-select-btn p-2.5 text-center border-2 border-slate-200 hover:border-indigo-400 bg-slate-50/90 hover:bg-indigo-50/50 rounded-2xl transition group flex flex-col items-center justify-center gap-0.5 cursor-pointer">
+              class="role-select-btn p-2 sm:p-2.5 min-h-[48px] text-center border-2 border-slate-200 hover:border-indigo-400 bg-slate-50/90 hover:bg-indigo-50/50 rounded-xl sm:rounded-2xl transition group flex flex-col items-center justify-center gap-0.5 cursor-pointer">
               <span class="text-xl">👩‍🏫</span>
               <span class="text-xs font-black text-slate-800 group-hover:text-indigo-600 truncate w-full">Docente</span>
               <span class="text-[10px] text-slate-400 font-medium">teacher</span>
@@ -3186,7 +3186,7 @@
 
             <!-- Botón 3: Estudiante -->
             <button type="button" id="roleBtn_student" onclick="selectRole('student')"
-              class="role-select-btn p-2.5 text-center border-2 border-slate-200 hover:border-indigo-400 bg-slate-50/90 hover:bg-indigo-50/50 rounded-2xl transition group flex flex-col items-center justify-center gap-0.5 cursor-pointer">
+              class="role-select-btn p-2 sm:p-2.5 min-h-[48px] text-center border-2 border-slate-200 hover:border-indigo-400 bg-slate-50/90 hover:bg-indigo-50/50 rounded-xl sm:rounded-2xl transition group flex flex-col items-center justify-center gap-0.5 cursor-pointer">
               <span class="text-xl">🎓</span>
               <span class="text-xs font-black text-slate-800 group-hover:text-indigo-600 truncate w-full">Estudiante</span>
               <span class="text-[10px] text-slate-400 font-medium">alumno</span>
