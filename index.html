@@ -10,8 +10,8 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Canvas Confetti CDN -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+  <!-- Favicon: Pata de gato con manchas naranjas -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M23 34C17 26 25 15 34 22C36 14 47 11 52 18C57 11 68 14 70 22C79 16 87 27 80 36C84 50 84 66 81 78C78 87 67 91 52 91C37 91 26 87 23 78C20 66 20 50 23 34Z' fill='%23FFF7ED' stroke='%23FDBA74' stroke-width='3'/%3E%3Cpath d='M58 13C65 10 72 16 72 23C80 18 88 28 82 38C86 52 86 64 83 72C74 65 67 52 68 38C68 27 62 19 58 13Z' fill='%23EA580C'/%3E%3Cpath d='M19 60C25 54 34 56 37 64C40 73 36 83 28 86C24 82 20 72 19 60Z' fill='%23F97316'/%3E%3Ccircle cx='34' cy='22' r='4.2' fill='%23F97316'/%3E%3Cellipse cx='28' cy='34' rx='5.5' ry='7.5' transform='rotate(-25 28 34)' fill='%23FB7185'/%3E%3Cellipse cx='43' cy='26' rx='6' ry='8.5' transform='rotate(-8 43 26)' fill='%23FB7185'/%3E%3Cellipse cx='60' cy='26' rx='6' ry='8.5' transform='rotate(8 60 26)' fill='%23FB7185'/%3E%3Cellipse cx='75' cy='34' rx='5.5' ry='7.5' transform='rotate(25 75 34)' fill='%23FB7185'/%3E%3Cpath d='M52 49C43 43 33 51 34 62C35 73 45 78 52 79C59 78 69 73 70 62C71 51 61 43 52 49Z' fill='%23FB7185'/%3E%3C/svg%3E">
   <!-- Módulos de FluencyOS: Kitten Avatar, 30 Lecturas y Gimnasio de Audio -->
   <script src="data_kitten.js"></script>
   <script src="data_readings.js"></script>
@@ -129,8 +129,47 @@
         <div class="p-4 border-b border-slate-100">
           <div class="flex items-center justify-between mb-3">
             <div class="flex items-center space-x-2.5">
-              <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-md shadow-indigo-200">
-                <i data-lucide="sparkles" class="w-5 h-5"></i>
+              <!-- Logo Oficial: Pata de gato con manchas naranjas -->
+              <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-50 to-orange-100 border border-orange-200/90 flex items-center justify-center p-1 shadow-sm shadow-orange-200/50 flex-shrink-0 group">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="w-8 h-8 drop-shadow-xs">
+                  <defs>
+                    <linearGradient id="pawBaseGrad_side" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#FFFFFF"/>
+                      <stop offset="100%" stop-color="#FFF7ED"/>
+                    </linearGradient>
+                    <linearGradient id="pawOrangeGrad1_side" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#FB923C"/>
+                      <stop offset="100%" stop-color="#EA580C"/>
+                    </linearGradient>
+                    <linearGradient id="pawOrangeGrad2_side" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#FDBA74"/>
+                      <stop offset="100%" stop-color="#F97316"/>
+                    </linearGradient>
+                    <linearGradient id="pawPadGrad_side" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#FDA4AF"/>
+                      <stop offset="100%" stop-color="#F43F5E"/>
+                    </linearGradient>
+                    <clipPath id="pawClip_side">
+                      <path d="M 23 34 C 17 26 25 15 34 22 C 36 14 47 11 52 18 C 57 11 68 14 70 22 C 79 16 87 27 80 36 C 84 50 84 66 81 78 C 78 87 67 91 52 91 C 37 91 26 87 23 78 C 20 66 20 50 23 34 Z"/>
+                    </clipPath>
+                  </defs>
+                  <path d="M 23 34 C 17 26 25 15 34 22 C 36 14 47 11 52 18 C 57 11 68 14 70 22 C 79 16 87 27 80 36 C 84 50 84 66 81 78 C 78 87 67 91 52 91 C 37 91 26 87 23 78 C 20 66 20 50 23 34 Z"
+                        fill="url(#pawBaseGrad_side)" stroke="#FDBA74" stroke-width="2.5" stroke-linejoin="round"/>
+                  <g clip-path="url(#pawClip_side)">
+                    <path d="M 58 13 C 65 10 72 16 72 23 C 80 18 88 28 82 38 C 86 52 86 64 83 72 C 74 65 67 52 68 38 C 68 27 62 19 58 13 Z" fill="url(#pawOrangeGrad1_side)"/>
+                    <path d="M 19 60 C 25 54 34 56 37 64 C 40 73 36 83 28 86 C 24 82 20 72 19 60 Z" fill="url(#pawOrangeGrad2_side)"/>
+                    <circle cx="34" cy="22" r="4.2" fill="#F97316"/>
+                    <circle cx="71" cy="79" r="4" fill="#FB923C"/>
+                  </g>
+                  <ellipse cx="28" cy="34" rx="5.5" ry="7.5" transform="rotate(-25 28 34)" fill="url(#pawPadGrad_side)"/>
+                  <ellipse cx="43" cy="26" rx="6" ry="8.5" transform="rotate(-8 43 26)" fill="url(#pawPadGrad_side)"/>
+                  <ellipse cx="60" cy="26" rx="6" ry="8.5" transform="rotate(8 60 26)" fill="url(#pawPadGrad_side)"/>
+                  <ellipse cx="75" cy="34" rx="5.5" ry="7.5" transform="rotate(25 75 34)" fill="url(#pawPadGrad_side)"/>
+                  <path d="M 52 49 C 43 43 33 51 34 62 C 35 73 45 78 52 79 C 59 78 69 73 70 62 C 71 51 61 43 52 49 Z" fill="url(#pawPadGrad_side)"/>
+                  <ellipse cx="41.5" cy="24" rx="2" ry="3.2" transform="rotate(-8 41.5 24)" fill="#FFFFFF" opacity="0.6"/>
+                  <ellipse cx="58.5" cy="24" rx="2" ry="3.2" transform="rotate(8 58.5 24)" fill="#FFFFFF" opacity="0.6"/>
+                  <ellipse cx="49" cy="55" rx="4.5" ry="2.2" fill="#FFFFFF" opacity="0.5"/>
+                </svg>
               </div>
               <div>
                 <span class="font-black text-lg tracking-tight text-slate-900">Rex<span class="text-indigo-600">ing</span></span>
@@ -2954,8 +2993,47 @@
       <div class="p-6 sm:p-7 space-y-4">
         <!-- Logo y Cabecera -->
         <div class="text-center space-y-1.5">
-          <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-500 text-white shadow-lg shadow-indigo-200 mb-1">
-            <i data-lucide="sparkles" class="w-7 h-7"></i>
+          <!-- Logo Oficial: Pata de gato con manchas naranjas -->
+          <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-50 via-orange-50 to-amber-100 border-2 border-orange-200 text-slate-800 shadow-lg shadow-orange-200/50 p-2 mb-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="w-12 h-12 drop-shadow-sm">
+              <defs>
+                <linearGradient id="pawBaseGrad_modal" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#FFFFFF"/>
+                  <stop offset="100%" stop-color="#FFF7ED"/>
+                </linearGradient>
+                <linearGradient id="pawOrangeGrad1_modal" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FB923C"/>
+                  <stop offset="100%" stop-color="#EA580C"/>
+                </linearGradient>
+                <linearGradient id="pawOrangeGrad2_modal" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FDBA74"/>
+                  <stop offset="100%" stop-color="#F97316"/>
+                </linearGradient>
+                <linearGradient id="pawPadGrad_modal" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#FDA4AF"/>
+                  <stop offset="100%" stop-color="#F43F5E"/>
+                </linearGradient>
+                <clipPath id="pawClip_modal">
+                  <path d="M 23 34 C 17 26 25 15 34 22 C 36 14 47 11 52 18 C 57 11 68 14 70 22 C 79 16 87 27 80 36 C 84 50 84 66 81 78 C 78 87 67 91 52 91 C 37 91 26 87 23 78 C 20 66 20 50 23 34 Z"/>
+                </clipPath>
+              </defs>
+              <path d="M 23 34 C 17 26 25 15 34 22 C 36 14 47 11 52 18 C 57 11 68 14 70 22 C 79 16 87 27 80 36 C 84 50 84 66 81 78 C 78 87 67 91 52 91 C 37 91 26 87 23 78 C 20 66 20 50 23 34 Z"
+                    fill="url(#pawBaseGrad_modal)" stroke="#FDBA74" stroke-width="2.5" stroke-linejoin="round"/>
+              <g clip-path="url(#pawClip_modal)">
+                <path d="M 58 13 C 65 10 72 16 72 23 C 80 18 88 28 82 38 C 86 52 86 64 83 72 C 74 65 67 52 68 38 C 68 27 62 19 58 13 Z" fill="url(#pawOrangeGrad1_modal)"/>
+                <path d="M 19 60 C 25 54 34 56 37 64 C 40 73 36 83 28 86 C 24 82 20 72 19 60 Z" fill="url(#pawOrangeGrad2_modal)"/>
+                <circle cx="34" cy="22" r="4.2" fill="#F97316"/>
+                <circle cx="71" cy="79" r="4" fill="#FB923C"/>
+              </g>
+              <ellipse cx="28" cy="34" rx="5.5" ry="7.5" transform="rotate(-25 28 34)" fill="url(#pawPadGrad_modal)"/>
+              <ellipse cx="43" cy="26" rx="6" ry="8.5" transform="rotate(-8 43 26)" fill="url(#pawPadGrad_modal)"/>
+              <ellipse cx="60" cy="26" rx="6" ry="8.5" transform="rotate(8 60 26)" fill="url(#pawPadGrad_modal)"/>
+              <ellipse cx="75" cy="34" rx="5.5" ry="7.5" transform="rotate(25 75 34)" fill="url(#pawPadGrad_modal)"/>
+              <path d="M 52 49 C 43 43 33 51 34 62 C 35 73 45 78 52 79 C 59 78 69 73 70 62 C 71 51 61 43 52 49 Z" fill="url(#pawPadGrad_modal)"/>
+              <ellipse cx="41.5" cy="24" rx="2" ry="3.2" transform="rotate(-8 41.5 24)" fill="#FFFFFF" opacity="0.6"/>
+              <ellipse cx="58.5" cy="24" rx="2" ry="3.2" transform="rotate(8 58.5 24)" fill="#FFFFFF" opacity="0.6"/>
+              <ellipse cx="49" cy="55" rx="4.5" ry="2.2" fill="#FFFFFF" opacity="0.5"/>
+            </svg>
           </div>
           <div>
             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Rex<span class="text-indigo-600">ing</span></h2>
@@ -3031,24 +3109,34 @@
           <div class="grid grid-cols-3 gap-2 pt-0.5">
             <!-- Botón 1: Administrador -->
             <button type="button" id="roleBtn_admin" onclick="selectRole('admin')"
-              class="role-select-btn p-2.5 text-center border-2 border-slate-200 hover:border-indigo-400 bg-slate-50/90 hover:bg-indigo-50/50 rounded-2xl transition group flex flex-col items-center justify-center gap-1 cursor-pointer">
+              class="role-select-btn p-2.5 text-center border-2 border-slate-200 hover:border-indigo-400 bg-slate-50/90 hover:bg-indigo-50/50 rounded-2xl transition group flex flex-col items-center justify-center gap-0.5 cursor-pointer">
               <span class="text-xl">👑</span>
               <span class="text-xs font-black text-slate-800 group-hover:text-indigo-600 truncate w-full">Administrador</span>
+              <span class="text-[10px] text-slate-400 font-medium">admin</span>
             </button>
 
             <!-- Botón 2: Docente -->
             <button type="button" id="roleBtn_teacher" onclick="selectRole('teacher')"
-              class="role-select-btn p-2.5 text-center border-2 border-slate-200 hover:border-indigo-400 bg-slate-50/90 hover:bg-indigo-50/50 rounded-2xl transition group flex flex-col items-center justify-center gap-1 cursor-pointer">
+              class="role-select-btn p-2.5 text-center border-2 border-slate-200 hover:border-indigo-400 bg-slate-50/90 hover:bg-indigo-50/50 rounded-2xl transition group flex flex-col items-center justify-center gap-0.5 cursor-pointer">
               <span class="text-xl">👩‍🏫</span>
               <span class="text-xs font-black text-slate-800 group-hover:text-indigo-600 truncate w-full">Docente</span>
+              <span class="text-[10px] text-slate-400 font-medium">teacher</span>
             </button>
 
             <!-- Botón 3: Estudiante -->
             <button type="button" id="roleBtn_student" onclick="selectRole('student')"
-              class="role-select-btn p-2.5 text-center border-2 border-slate-200 hover:border-indigo-400 bg-slate-50/90 hover:bg-indigo-50/50 rounded-2xl transition group flex flex-col items-center justify-center gap-1 cursor-pointer">
+              class="role-select-btn p-2.5 text-center border-2 border-slate-200 hover:border-indigo-400 bg-slate-50/90 hover:bg-indigo-50/50 rounded-2xl transition group flex flex-col items-center justify-center gap-0.5 cursor-pointer">
               <span class="text-xl">🎓</span>
               <span class="text-xs font-black text-slate-800 group-hover:text-indigo-600 truncate w-full">Estudiante</span>
+              <span class="text-[10px] text-slate-400 font-medium">alumno</span>
             </button>
+          </div>
+
+          <!-- Píldora de ayuda directa con credenciales -->
+          <div class="bg-indigo-50/70 border border-indigo-100 rounded-xl p-2 text-center">
+            <p class="text-[10px] text-indigo-700 font-semibold leading-tight">
+              💡 Haz clic en cualquier perfil para cargar sus credenciales y pulsa <b>"Ingresar a Rexing"</b>.
+            </p>
           </div>
         </div>
 
@@ -3124,6 +3212,7 @@
           loginModal.classList.remove('hidden');
           loginModal.style.display = 'flex';
           setTimeout(() => {
+            selectRole('admin');
             const userInp = document.getElementById('loginUsername');
             if (userInp) userInp.focus();
             if (window.lucide && typeof lucide.createIcons === 'function') {
@@ -3435,22 +3524,18 @@
         badge.className = "inline-block bg-indigo-50 border border-indigo-100 text-indigo-700 text-[11px] font-bold px-3 py-0.5 rounded-full transition-all";
       }
 
-      // Resetear selección de botones de rol
-      document.querySelectorAll('.role-select-btn').forEach(btn => {
-        btn.classList.remove('border-indigo-600', 'bg-indigo-50/80', 'ring-2', 'ring-indigo-300', 'text-indigo-700', 'shadow-xs');
-        btn.classList.add('border-slate-200', 'bg-slate-50/90', 'text-slate-800');
-      });
-
-      if (userInp) {
-        userInp.value = '';
-        setTimeout(() => userInp.focus(), 100);
-      }
-      if (passInp) passInp.value = '';
       if (errorAlert) errorAlert.classList.add('hidden');
 
       if (loginModal) {
         loginModal.classList.remove('hidden');
         loginModal.style.display = 'flex';
+        setTimeout(() => {
+          selectRole('admin');
+          if (userInp) userInp.focus();
+          if (window.lucide && typeof lucide.createIcons === 'function') {
+            try { lucide.createIcons(); } catch(e){}
+          }
+        }, 50);
       }
 
       // Cerrar cualquier modal abierto
@@ -6837,9 +6922,6 @@
       }
 
       appendChatMessage('ai', reply, null, replyEs);
-    }
-
-      appendChatMessage('ai', reply);
     }
 
     function startVoiceInput() {
